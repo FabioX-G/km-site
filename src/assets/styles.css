@@ -86,7 +86,7 @@ body{
       transparent 100%),
 
     /* 深处补光：2–3 屏仍有层次 */
-    radial-gradient(140vh 80vh at 50% 120vh,
+    radial-gradient(140vh 80vh at 50% calc(100% + 40vh),
       rgba(138, 92,255,.10) 0%,
       rgba(51,225,255,.08) 75%,
       transparent 100%),
@@ -99,7 +99,7 @@ body{
 
   background-repeat: no-repeat;
   background-size: 240% 240%, 160% 160%, 200% 200%, 100% 100%;
-  background-position: 50% 40%, 50% 0%, 50% 120vh, 50% 50%;
+  background-position: 50% 40%, 50% 0%, 50% calc(100% + 40vh), 50% 50%;
 
   animation: rot 36s linear infinite, drift 28s ease-in-out infinite alternate;
 
@@ -114,9 +114,9 @@ body{
 /* 只保留这一份关键帧（与上面的三层匹配） */
 @keyframes rot{ to{ --angle:360deg; } }
 @keyframes drift{
-  0%   { background-position: 48% 38%, 50%  -2vh, 50% 118vh, 50% 50%; }
-  50%  { background-position: 52% 44%, 50%  -4vh, 50% 126vh, 50% 50%; }
-  100% { background-position: 50% 40%, 50%   0vh, 50% 120vh, 50% 50%; }
+  0%   { background-position: 48% 38%, 50%  -2vh, 50% calc(100% + 38vh), 50% 50%; }
+  50%  { background-position: 52% 44%, 50%  -4vh, 50% calc(100% + 46vh), 50% 50%; }
+  100% { background-position: 50% 40%, 50%   0vh, 50% calc(100% + 40vh), 50% 50%; }
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -167,7 +167,7 @@ body::before, body::after{ content:none; }
 @media (prefers-reduced-motion: reduce){ html{ animation: none; } }
 
 /* 任何容器不许再自己涂背景（避免第二层） */
-.site-header, .container, main, section, header, footer, .hero {
+.container, .hero {
   background: transparent !important;
 }
 
