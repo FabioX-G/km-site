@@ -47,51 +47,44 @@ html[data-theme="light"]{
    -------------------------------------------------------------------------- */
 *{ box-sizing:border-box; }
 html, body{ height:100%; min-height:100%; margin:0; padding:0; }
-html, body { background: transparent; }
+html{ background-color: var(--bg); }      /* 仅兜底纯色 */
 body{
   font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans";
   color:var(--fg);
-  overflow-x:hidden;         /* 文档层禁止横向滚动上下文 */
+  overflow-x:hidden;
   position:relative;
+  background-color: var(--bg);
 }
 
 /* --------------------------------------------------------------------------
-   3) Fundamental background — SINGLE LAYER, FULL-BLEED, iOS-SAFE
+   3) Global background — single owner = body (iOS-safe)
    -------------------------------------------------------------------------- */
-/* 1) 根元素只做兜底底色，禁止在 html 画渐变 */
-html{
-  background-color: var(--bg);
-  background-image: none;
-}
-
-/* 2) 唯一的动态背景放在 body（随内容滚动） */
-/* 全局唯一背景：一层（多个渐变片段合成到同一层，不启用 fixed） */
 @property --angle { syntax:"<angle>"; inherits:false; initial-value:0deg; }
 
 body{
   --angle: 0deg;
 
-  /* 顺序很重要：上层→下层；最后一层是非透明线性渐变，当作安全底座 */
+  /* 顺序：上层 → 下层；最后一层为非透明“线性底座”避免露纯底色 */
   background:
-    /* 主色场：conic —— 可动画，首屏更绚 */
+    /* 主色场：conic（可动画） */
     conic-gradient(from var(--angle) at 50% 28%,
       rgba(51,225,255,.24) 0deg,
       rgba(138, 92,255,.22) 150deg,
       rgba(51,225,255,.24) 360deg),
 
-    /* 顶部补光：避免首屏显得平 */
+    /* 顶部补光：首屏更有层次 */
     radial-gradient(120vh 60vh at 50% -20vh,
       rgba(138, 92,255,.10) 0%,
       rgba(51,225,255,.08) 60%,
       transparent 100%),
 
-    /* 深处补光：2–3 屏仍有层次 */
+    /* 文档底部补光：无论页面多长都不“褪色” */
     radial-gradient(140vh 80vh at 50% calc(100% + 40vh),
       rgba(138, 92,255,.10) 0%,
       rgba(51,225,255,.08) 75%,
       transparent 100%),
 
-    /* 永不透明的底：极淡的纵向线性渐变，防止任意时刻露出纯底色 */
+    /* 永不透明的线性底座（防止任意时刻露出纯底色） */
     linear-gradient(180deg,
       rgba(12,18,40,.00) 0%,
       rgba(12,18,40,.06) 60%,
@@ -103,33 +96,30 @@ body{
 
   animation: rot 36s linear infinite, drift 28s ease-in-out infinite alternate;
 
-  /* 其余保持 */
-  color: var(--fg);
-  background-color: var(--bg);
-  overflow-x: hidden;
   min-height: 100%;
-  position: relative;
 }
 
-/* 只保留这一份关键帧（与上面的三层匹配） */
+/* 动画关键帧（唯一） */
 @keyframes rot{ to{ --angle:360deg; } }
 @keyframes drift{
   0%   { background-position: 48% 38%, 50%  -2vh, 50% calc(100% + 38vh), 50% 50%; }
   50%  { background-position: 52% 44%, 50%  -4vh, 50% calc(100% + 46vh), 50% 50%; }
   100% { background-position: 50% 40%, 50%   0vh, 50% calc(100% + 40vh), 50% 50%; }
 }
-
 @media (prefers-reduced-motion: reduce){
   body{ animation: none; }
 }
 
-/* 3) iOS 粘性头部避免 blur 产生独立层；用更实底色替代 */
+/* --------------------------------------------------------------------------
+   4) Header / navigation (single definition)
+   -------------------------------------------------------------------------- */
 .site-header{
   position: sticky; top:0; z-index:10;
   display:flex; align-items:center; gap:.75rem;
   padding: 1rem min(4vw, 24px);
   border-bottom:1px solid var(--card-border);
 
+  /* 桌面轻 blur + 渐变带；iOS 禁用 blur 但保留渐变带 */
   backdrop-filter: blur(8px);
   background:
     linear-gradient(to bottom,
@@ -150,33 +140,49 @@ body{
   }
 }
 
-/* 4) 保证容器透明，清除遗留覆盖层与伪元素背景 */
-.container{ background: transparent; }
-.hero::before, .hero::after,
-body::before, body::after{ content:none; }
+.brand{ flex:0 0 auto; color:var(--fg); text-decoration:none; font-weight:700; }
 
-/* 5) 横向导航只在自身滚动，阻断滚动链 */
 .nav-scroller{
-  overflow-x:auto; overflow-y:hidden; white-space:nowrap;
+  flex: 1 1 auto; min-width: 0;
+  overflow-x:auto; overflow-y:hidden;
   -webkit-overflow-scrolling:touch;
+  white-space:nowrap;
   touch-action: pan-x;
   overscroll-behavior-x: contain;
+
+  /* 可滑动提示淡出 */
+  --fade: 16px;
+  -webkit-mask-image: linear-gradient(to right,
+      transparent 0, black var(--fade),
+      black calc(100% - var(--fade)), transparent 100%);
+          mask-image: linear-gradient(to right,
+      transparent 0, black var(--fade),
+      black calc(100% - var(--fade)), transparent 100%);
+  scrollbar-width: none;
 }
+.nav-scroller::-webkit-scrollbar{ display:none; }
 
-
-@media (prefers-reduced-motion: reduce){ html{ animation: none; } }
-
-/* 任何容器不许再自己涂背景（避免第二层） */
-.container, .hero {
-  background: transparent !important;
+.nav{
+  display:inline-flex; align-items:center; gap:.75rem;
+  flex-wrap:nowrap; white-space:nowrap; margin:0; padding:0;
 }
-
-/* 关闭遗留伪元素背景层 */
-.hero::before, .hero::after,
-body::before, body::after { content: none !important; }
+.nav > li{ list-style:none; }
+.nav-link{
+  color:var(--muted); text-decoration:none;
+  padding:.25rem .5rem; border-radius:8px; flex:0 0 auto;
+}
+.nav-link:hover, .nav-link.active{
+  color:var(--fg); background:var(--card-border);
+}
+#themeToggle{
+  border:1px solid var(--card-border);
+  background:transparent; color:var(--fg);
+  padding:.4rem .6rem; border-radius:8px; cursor:pointer;
+  flex:0 0 auto;
+}
 
 /* --------------------------------------------------------------------------
-   4) Layout primitives
+   5) Layout primitives
    -------------------------------------------------------------------------- */
 .container{
   width:min(1100px,92%);
@@ -187,90 +193,18 @@ body::before, body::after { content: none !important; }
 }
 
 /* --------------------------------------------------------------------------
-   5) Header / navigation（移动端可横滑，且不带动页面）
-   -------------------------------------------------------------------------- */
-.site-header{
-  position: sticky; top: 0; z-index: 10;
-  display: flex; align-items: center; gap: .75rem;
-  padding: 1rem min(4vw, 24px);
-  border-bottom:1px solid var(--card-border);
-
-  /* 桌面端可用轻 blur；iOS 将在下面禁用以避免分层 */
-  backdrop-filter: blur(8px);
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
-}
-
-/* iOS：禁用 blur，使用更实底色，避免独立合成层带来的“竖色带” */
-@supports (-webkit-touch-callout: none) {
-  .site-header{
-    backdrop-filter: none;
-    background: color-mix(in srgb, var(--bg) 92%, black 8%);
-  }
-}
-
-.brand{ flex: 0 0 auto; color:var(--fg); text-decoration:none; font-weight:700; }
-
-.nav-scroller{
-  /* 让它占据剩余空间，并允许收缩触发 overflow */
-  flex: 1 1 auto;
-  min-width: 0;
-
-  /* 变成独立的横向滚动面板 */
-  overflow-x: auto; overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  white-space: nowrap;
-  touch-action: pan-x;
-  overscroll-behavior-x: contain;   /* 阻断滚动链：不把横滑传给页面 */
-
-  /* 提示可滑动（可选淡出遮罩） */
-  --fade: 16px;
-  -webkit-mask-image: linear-gradient(to right,
-      transparent 0, black var(--fade),
-      black calc(100% - var(--fade)), transparent 100%);
-          mask-image: linear-gradient(to right,
-      transparent 0, black var(--fade),
-      black calc(100% - var(--fade)), transparent 100%);
-
-  /* 隐藏滚动条 */
-  scrollbar-width: none;
-}
-.nav-scroller::-webkit-scrollbar{ display:none; }
-
-.nav{
-  display: inline-flex;
-  align-items:center;
-  gap:.75rem;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-  margin:0; padding:0;
-}
-.nav > li{ list-style: none; }
-
-.nav-link{
-  color:var(--muted); text-decoration:none;
-  padding:.25rem .5rem; border-radius:8px;
-  flex: 0 0 auto;
-}
-.nav-link:hover, .nav-link.active{
-  color:var(--fg);
-  background:var(--card-border);
-}
-#themeToggle{
-  border:1px solid var(--card-border);
-  background:transparent; color:var(--fg);
-  padding:.4rem .6rem; border-radius:8px; cursor:pointer;
-  flex: 0 0 auto;
-}
-
-/* --------------------------------------------------------------------------
-   6) Hero (content only)
+   6) Hero
    -------------------------------------------------------------------------- */
 .hero{
   display:grid;
   grid-template-columns:140px 1fr;
   gap:2rem; align-items:center;
   margin-top:2rem;
+  background: transparent; /* 容器透明，由 body 提供背景 */
 }
+.hero::before, .hero::after,
+body::before, body::after{ content:none; } /* 只保留这一处清理 */
+
 .headshot{
   width:140px; height:140px; border-radius:50%;
   object-fit:cover; border:2px solid var(--card-border);
@@ -392,12 +326,17 @@ main p, main li{ line-height:1.7; color:var(--fg); }
   margin:2rem auto 2rem;
   display:flex; justify-content:space-between; align-items:center; gap:1rem;
   color:var(--muted);
-  backdrop-filter:blur(.5px);
   border-top:1px solid rgba(255,255,255,.06);
   padding-top:1rem;
+  background: transparent; /* 由 body 提供背景 */
 }
 .site-footer a{ color:var(--link); text-decoration:none; }
 .site-footer a:hover{ color:var(--link-hover); }
+
+/* iOS: 禁用 footer 的 blur，避免新增合成层 */
+@supports (-webkit-touch-callout: none){
+  .site-footer{ backdrop-filter: none; }
+}
 
 /* --------------------------------------------------------------------------
    10) Links & lists
@@ -414,10 +353,3 @@ a:hover, a:focus{
 }
 main li{ line-height:1.8; }
 .site-footer a{ text-decoration-thickness:.08rem; }
-
-/* --------------------------------------------------------------------------
-   11) Hard guarantees（清除遗留覆盖层）
-   -------------------------------------------------------------------------- */
-.hero::before, .hero::after,
-body::before, body::after { content:none !important; }
-.container { background: transparent !important; }
