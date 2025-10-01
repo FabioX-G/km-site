@@ -6,40 +6,20 @@
    1) Design tokens
    -------------------------------------------------------------------------- */
 :root{
-  /* Dark */
-  --bg: #0b1020;
-  --fg: #e6e9f2;
-  --muted:#aab3c5;
-  --accent:#7bdff2;
-
-  --card:#121939;
-  --card-border:rgba(255,255,255,.08);
-
-  /* Neon RGB triplets (for rgba reuse) */
-  --c-cyan:   51,225,255;
-  --c-violet:138, 92,255;
-  --c-mag:   255, 61,154;
-
-  /* Links */
-  --link:#9bd6ff;
-  --link-hover:#d5f1ff;
-  --link-underline:rgba(155,214,255,.45);
-
-  color-scheme: dark light;
+  --bg:#0a0f1f; --fg:#e8ecf8; --muted:#97a1b6;
+  --card:#0f1730; --card-border:rgba(255,255,255,.08);
+  --accent:#3fd1ff;
+  /* 渐变主色 */
+  --c-cyan:  63,209,255;
+  --c-indigo:74, 92,255;
+  --c-violet:132,73,255;
+  --link:#5ad6ff; --link-hover:#d9f3ff; --link-underline:rgba(90,214,255,.45);
 }
-
 html[data-theme="light"]{
-  --bg:#eef6ff;
-  --fg:#0a0a0a;
-  --muted:#586071;
+  --bg:#f4f8ff; --fg:#0b1222; --muted:#5b667a;
+  --card:#ffffff; --card-border:rgba(0,0,0,.08);
   --accent:#0ea5e9;
-
-  --card:#ffffff;
-  --card-border:rgba(0,0,0,.08);
-
-  --link:#0a66ff;
-  --link-hover:#084ccc;
-  --link-underline:rgba(10,102,255,.35);
+  --link:#0a66ff; --link-hover:#084ccc; --link-underline:rgba(10,102,255,.35);
 }
 
 /* --------------------------------------------------------------------------
