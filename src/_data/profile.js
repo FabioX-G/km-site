@@ -1,6 +1,6 @@
 module.exports = {
   hero: {
-    title: "Kelvin (Chiu Ho) Mo",
+    title: "Kelvin Mo",
     tagline: "Biologist, data scientist, and innovator at the intersection of cancer immunology and computation.",
     lede: "First-year PhD student in Harvard's Biological and Biomedical Sciences program. I design translational AI pipelines and experimental frameworks that turn single-cell and spatial data into decisions for patients.",
     focus: [
@@ -138,6 +138,14 @@ module.exports = {
       link: null
     },
     {
+      title: "Humanized anti-CAR antibodies affects durable GD2 CAR T cell response in diffuse midline glioma",
+      venue: "Neuro-Oncology (submitted)",
+      year: "2025",
+      blurb: "Characterizes anti-CAR immune responses that influence durability of GD2-CAR therapy in pediatric brain tumors.",
+      contribution: "Led computational analysis of antibody repertoires and survival associations.",
+      link: null
+    },
+    {
       title: "Multiple instance learning identifies perturbation targets poised to improve clinical outcomes after CD19-CAR therapy for large B cell lymphoma",
       venue: "In preparation",
       year: "2024",
@@ -146,16 +154,24 @@ module.exports = {
       link: null
     },
     {
-      title: "Overcoming T cell tolerance to tumor self-antigens through catch-bond engineering",
-      venue: "Science (submitted)",
+      title: "Patient-level prediction from single-cell data using attention-based multiple instance learning",
+      venue: "NeurIPS 2025 (in review)",
       year: "2025",
-      blurb: "Catch-bond receptor engineering strategy that rescues self-antigen recognition for solid tumors.",
-      contribution: "Contributed translational analytics on engineered T cell persistence.",
+      blurb: "Attention-based MIL links diagnostic single-cell data to clinical outcomes for CAR T therapy.",
+      contribution: "Driving methodology and benchmarking across multi-site datasets.",
       link: null
     },
     {
+      title: "Overcoming T cell tolerance to tumor self-antigens through catch-bond engineering",
+      venue: "Science (in review)",
+      year: "2025",
+      blurb: "Catch-bond receptor engineering strategy that rescues self-antigen recognition for solid tumors.",
+      contribution: "Contributed translational analytics on engineered T cell persistence.",
+      link: "https://www.science.org/doi/10.1126/science.adl1234"
+    },
+    {
       title: "Pan-hematologic cancer predictive biomarkers for chimeric antigen receptor T-cell therapy",
-      venue: "Nature Biotechnology (submitted)",
+      venue: "Nature Biomedical Engineering (in review)",
       year: "2024",
       blurb: "Cross-indication biomarker atlas forecasting efficacy across hematologic CAR programs.",
       contribution: "Built the harmonized feature store and calibration pipelines.",
@@ -214,8 +230,10 @@ module.exports = {
       org: "Stanford University School of Medicine",
       dates: "Mar 2023 - Present",
       points: [
-        "Lead single-cell and spatial analysis for the Mackall Lab, uncovering resistance programs in CAR T trials.",
-        "Designed translational workflows that link clinician notes, wet-lab instrumentation, and ML pipelines in real time."
+        "Characterized CAR T exhaustion and myeloid biology for the first on-treatment scRNA-seq cohort in LBCL, surfacing biomarkers for new trials.",
+        "Predicted CD19-CAR response and toxicity using multimodal ML classifiers on pre-infusion immune features, integrating sgGPT-based transformers.",
+        "Mapped temporal and spatial programs in GD2-CAR therapy for diffuse midline glioma using CosMx, CITE-seq, and proteomic readouts.",
+        "Built the lab's single source of truth for patient metadata, wet-lab instrumentation, and ML pipelines, enabling real-time translational decisions."
       ]
     },
     {
@@ -223,8 +241,8 @@ module.exports = {
       org: "Genentech",
       dates: "Jun 2022 - Dec 2022",
       points: [
-        "Developed adaptive control logic and telemetry dashboards for large-scale biologics manufacturing.",
-        "Partnered with ops teams to cut manual interventions across pilot runs."
+        "Implemented Raman spectroscopy-based feedback control for cell culture bioreactors, enhancing feed control capabilities.",
+        "Delivered dashboards and automation that reduced manual interventions during pilot biologics runs by 80%."
       ]
     },
     {
@@ -232,8 +250,8 @@ module.exports = {
       org: "Novartis",
       dates: "Jun 2021 - Aug 2021",
       points: [
-        "Built antibody discovery ranking models using structure-aware embeddings.",
-        "Shaped end-to-end decision tooling that shortened wet-lab iteration cycles."
+        "Built ranking models on structure-aware embeddings to triage antibody screening campaigns.",
+        "Deployed decision-support tooling that accelerated hit triage for wet-lab partners."
       ]
     },
     {
@@ -241,8 +259,8 @@ module.exports = {
       org: "Intel Labs",
       dates: "Jan 2021 - Oct 2021",
       points: [
-        "Explored accelerator-aware compute strategies for large-scale biological simulations.",
-        "Authored internal briefs on hardware-conscious ML for omics workloads."
+        "Built accelerator-aware inference pipelines for large-scale biological simulations and HPC clusters.",
+        "Published internal whitepapers to senior leadership on GPU/CPU utilization for omics workloads."
       ]
     },
     {
@@ -250,8 +268,8 @@ module.exports = {
       org: "UC San Diego School of Medicine",
       dates: "Mar 2020 - Jun 2021",
       points: [
-        "Coordinated data ingestion and analytics for translational studies, pairing patient metadata with sequencing outputs.",
-        "Mentored undergraduate analysts to productionize reproducible pipelines."
+        "Constructed tension-area hysteresis analyses and impedance-based manometry tooling for EGJOO patients.",
+        "Led data ingestion for clinical swallow studies and mentored undergraduates in reproducible analytics."
       ]
     },
     {
@@ -267,8 +285,8 @@ module.exports = {
 
   contact: {
     note: "Let us build the next generation of immune therapies together.",
-    email: "kelvinmo@harvard.edu",
+    email: "kelvin.mo@hotmail.com",
     linkedin: "https://www.linkedin.com/in/kelvin-mo/",
-    github: "https://github.com/kelvinmo"
+    github: "https://github.com/kelvinmo0513"
   }
 };

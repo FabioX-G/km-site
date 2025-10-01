@@ -1,10 +1,11 @@
 {% set hero = profile.hero %}
+{% set heroTitle = hero_title or hero.title %}
 <section class="hero" aria-labelledby="hero-title">
   <figure class="hero-photo">
     <img class="headshot" src="{{ site.author.headshot }}" alt="Headshot of {{ site.author.name }}">
   </figure>
   <div class="hero-copy">
-    <h1 id="hero-title">{{ hero.title }}</h1>
+    <h1 id="hero-title">{{ heroTitle }}</h1>
     <p class="tagline">{{ hero.tagline }}</p>
     <p class="lede">{{ hero.lede }}</p>
     {% if hero.focus %}

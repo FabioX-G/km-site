@@ -1,19 +1,19 @@
 {
-  "title": "Kelvin (Chiu Ho) Mo",
+  "title": "Kelvin Mo",
   "tagline": "Biologist, data scientist, and innovator at the intersection of cancer immunology and computation.",
-  "description": "Kelvin (Chiu Ho) Mo is a Harvard BBS PhD student building translational cancer immunology programs powered by computation.",
+  "description": "Kelvin Mo is a Harvard BBS PhD student building translational cancer immunology programs powered by computation.",
   "url": "https://kelvin-mo.com",
   "author": {
-    "name": "Kelvin (Chiu Ho) Mo",
-    "email": "kelvinmo@harvard.edu",
+    "name": "Kelvin Mo",
+    "email": "kelvin.mo@hotmail.com",
     "linkedin": "https://www.linkedin.com/in/kelvin-mo/",
-    "github": "https://github.com/kelvinmo",
+    "github": "https://github.com/kelvinmo0513",
     "scholar": "#",
     "location": "Cambridge, MA",
     "headshot": "/assets/kelvinmo-profile.png"
   },
   "seo": {
-    "keywords": "Kelvin (Chiu Ho) Mo, Harvard, Biological and Biomedical Sciences, cancer immunology, computational biology, spatial transcriptomics, CAR T",
+    "keywords": "Kelvin Mo, Harvard, Biological and Biomedical Sciences, cancer immunology, computational biology, spatial transcriptomics, CAR T",
     "image": "/assets/og-cover.jpg",
     "twitter": "@kelvinmo"
   },
