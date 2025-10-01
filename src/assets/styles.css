@@ -72,68 +72,65 @@ body{
       - Fixed on desktop; scroll on iOS for pinch-zoom smoothness
    -------------------------------------------------------------------------- */
 /* --------------------------------------------------------------------------
-   3) Fundamental background (ROOT) — cyberpunk, sleek, dynamic
-   -------------------------------------------------------------------------- */
-/* --------------------------------------------------------------------------
-   3) Fundamental background (ROOT) — single unified layer
+   3) Fundamental background (ROOT) — single unified layer (radial)
    -------------------------------------------------------------------------- */
 
-/* Animate the conic gradient’s start angle smoothly */
-@property --bg-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
+/* We keep the body transparent; html owns the canvas */
+html, body { background: transparent; }
 
-html {
-  /* Base color fills any tiny gaps while painting the gradient */
+html{
+  /* Base fill behind the gradient */
   background-color: var(--bg);
 
-  /* One single background layer: a conic gradient that blends cyan → violet → magenta
-     with soft alpha so it feels like an aurora sheet instead of discrete blobs.       */
-  --bg-angle: 0deg;
-  background-image: conic-gradient(
-    from var(--bg-angle) at 48% 36%,
-    rgba(51, 225, 255, 0.22) 0deg,     /* cyan */
-    rgba(51, 225, 255, 0.18) 70deg,
-    rgba(138,  92, 255, 0.18) 170deg,  /* violet */
-    rgba(255,  61, 154, 0.22) 300deg,  /* magenta */
-    rgba(51, 225, 255, 0.22) 360deg    /* back to cyan for a seamless loop */
+  /* ONE layer only: a big radial gradient that blends cyan → violet → magenta
+     into the base color. Oversized so it always covers every aspect ratio.   */
+  background-image: radial-gradient(
+    180% 160% at 42% 34%,
+    rgba(51, 225, 255, 0.26) 0%,    /* cyan glow */
+    rgba(51, 225, 255, 0.12) 28%,
+    rgba(138, 92, 255, 0.18) 55%,   /* violet */
+    rgba(255, 61, 154, 0.20) 78%,   /* magenta */
+    var(--bg) 100%                  /* fade to base */
   );
 
-  /* Make sure the paint always covers beyond the viewport in both axes */
-  background-size: 200% 200%;
-  background-position: 50% 40%;
+  /* Oversize + center, then do a very gentle drift */
+  background-size: 170% 170%;
+  background-position: 50% 42%;
   background-repeat: no-repeat;
 
-  /* Subtle, continuous movement by rotating the gradient’s start angle */
-  animation: km-bg-spin 36s linear infinite;
-  will-change: background-image;
-  transform: translateZ(0);
+  /* Smooth, unified motion (no attachment tricks = iOS friendly) */
+  animation: kmAurora 36s ease-in-out infinite alternate;
+
+  /* Subtle “polish” */
   filter: saturate(108%) contrast(102%);
+  will-change: background-position, background-size;
+  transform: translateZ(0);
 }
 
-/* Light theme tuning: slightly softer alphas so it stays airy */
-html[data-theme="light"] {
-  background-image: conic-gradient(
-    from var(--bg-angle) at 48% 36%,
-    rgba(51, 225, 255, 0.18) 0deg,
-    rgba(51, 225, 255, 0.14) 70deg,
-    rgba(138,  92, 255, 0.14) 170deg,
-    rgba(255,  61, 154, 0.18) 300deg,
-    rgba(51, 225, 255, 0.18) 360deg
+/* Light theme: same single layer, just softer alphas so it stays airy */
+html[data-theme="light"]{
+  background-image: radial-gradient(
+    180% 160% at 42% 34%,
+    rgba(51, 225, 255, 0.22) 0%,
+    rgba(51, 225, 255, 0.10) 28%,
+    rgba(138, 92, 255, 0.14) 55%,
+    rgba(255, 61, 154, 0.18) 78%,
+    var(--bg) 100%
   );
 }
 
-@keyframes km-bg-spin {
-  to { --bg-angle: 360deg; }
+/* Unified single-layer motion:
+   - tiny pan (X/Y) and a small size pulse for a living, sleek feel */
+@keyframes kmAurora{
+  0%   { background-position: 48% 40%; background-size: 168% 168%; }
+  50%  { background-position: 52% 45%; background-size: 174% 174%; }
+  100% { background-position: 49% 42%; background-size: 170% 170%; }
 }
 
-/* Respect users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
+/* Respect motion preferences */
+@media (prefers-reduced-motion: reduce){
   html { animation: none; }
 }
-
 /* --------------------------------------------------------------------------
    4) Layout primitives
    -------------------------------------------------------------------------- */
