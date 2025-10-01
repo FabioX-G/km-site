@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Kelvin Mo — Site Styles (clean, robust, future-proof)
+   Kelvin Mo — Site Styles (robust, glowing, future-proof)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -16,10 +16,14 @@
   --card: #121939;
   --card-border: rgba(255,255,255,.08);
 
-  /* Neon blobs */
-  --neon-cyan: #33e1ff;
-  --neon-magenta: #ff3d9a;
+  /* Neon colors (both hex and rgba for compatibility) */
+  --neon-cyan:   #33e1ff;
+  --neon-magenta:#ff3d9a;
   --neon-violet: #8a5cff;
+
+  --neon-cyan-24:    rgba(51,225,255,.24);
+  --neon-magenta-20: rgba(255,61,154,.20);
+  --neon-violet-18:  rgba(138,92,255,.18);
 
   /* Links (dark) */
   --link: #9bd6ff;
@@ -27,10 +31,10 @@
   --link-underline: rgba(155,214,255,.45);
 }
 
-/* Light theme: keep a faint tint so there are no pure-white gaps */
+/* Light theme with a faint color tint (prevents flat white areas) */
 html[data-theme="light"]{
-  --bg: #f7fbff;          /* slightly blue-tinted white */
-  --bg-alt: #fff0f9;      /* faint magenta tint */
+  --bg: #eef6ff;      /* soft blue */
+  --bg-alt: #fff0f9;  /* soft magenta */
   --fg: #0a0a0a;
   --muted: #586071;
   --accent: #0ea5e9;
@@ -41,69 +45,67 @@ html[data-theme="light"]{
   --link:#0a66ff;
   --link-hover:#084ccc;
   --link-underline: rgba(10,102,255,.35);
+
+  /* Slightly lighter glow in light mode (looks airy, not heavy) */
+  --neon-cyan-24:    rgba(51,225,255,.20);
+  --neon-magenta-20: rgba(255,61,154,.18);
+  --neon-violet-18:  rgba(138,92,255,.16);
 }
 
 /* --------------------------------------------------------------------------
    2) Base reset
    -------------------------------------------------------------------------- */
-* { box-sizing: border-box; }
-html, body { height: 100%; min-height: 100%; margin: 0; padding: 0; }
-body {
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
-  color: var(--fg);
-  background: transparent;          /* let the root own the paint */
-  overflow-x: hidden;
-  position: relative;
+*{ box-sizing:border-box; }
+html, body{ height:100%; min-height:100%; margin:0; padding:0; }
+body{
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans";
+  color:var(--fg);
+  background:transparent;           /* root owns the paint */
+  overflow-x:hidden;
+  position:relative;
 }
 
 /* --------------------------------------------------------------------------
    3) Fundamental background (ROOT)
-      Coverage & stability principles:
-      - Paint on html, not body
-      - Layers sized > viewport (200vw / 200vh) to avoid “holes”
-      - Fixed on desktop; scroll on iOS (pinch-zoom friendly)
+      - No color-mix; just rgba/oklch so Chrome/Safari/Firefox all agree
+      - Layers are > viewport to avoid holes at any zoom/aspect
+      - Fixed on desktop; scroll on iOS for pinch-zoom smoothness
    -------------------------------------------------------------------------- */
 html{
   background-color: var(--bg);
 
-  /* Layer stack (back → front) */
-  /*   a) base conic wash (gives subtle color across the *entire* canvas)
-       b) large linear wash between bg/bg-alt
-       c) mega soft neon blobs (all oversized so they always cover)
-       d) subtle noise
-       e) faint cross grid                                      */
+  /* Layer stack (back → front):
+     1. base linear wash (soft tint across entire canvas)
+     2-4. oversized neon blobs (cyan, magenta, violet)
+     5. vignette at bottom to “ground” cards
+     6. subtle noise
+     7-8. faint cross grid                                        */
   background-image:
-    conic-gradient(from 15deg at 30% 40%,
-      color-mix(in oklab, var(--bg) 90%, var(--bg-alt) 10%),
-      color-mix(in oklab, var(--bg-alt) 85%, var(--bg) 15%),
-      color-mix(in oklab, var(--bg) 92%, var(--bg-alt) 8%)),
     linear-gradient(120deg, var(--bg) 0%, var(--bg-alt) 45%, var(--bg) 100%),
-    radial-gradient(120vw 120vh at 10% 15%,
-      color-mix(in oklab, var(--neon-cyan) 18%, transparent), transparent 70%),
-    radial-gradient(140vw 120vh at 90% 10%,
-      color-mix(in oklab, var(--neon-magenta) 16%, transparent), transparent 72%),
-    radial-gradient(160vw 140vh at 50% 110%,
-      color-mix(in oklab, var(--neon-violet) 14%, transparent), transparent 75%),
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.06'/></svg>"),
+    radial-gradient(130vw 130vh at 14% 18%, var(--neon-cyan-24), transparent 70%),
+    radial-gradient(150vw 130vh at 88% 12%, var(--neon-magenta-20), transparent 72%),
+    radial-gradient(170vw 150vh at 50% 110%, var(--neon-violet-18), transparent 75%),
+    radial-gradient(120vw 60vh  at 50% 108%, rgba(0,0,0,.25), transparent 70%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.05'/></svg>"),
     linear-gradient(145deg, rgba(255,255,255,.06) 1px, transparent 1px),
     linear-gradient(35deg,  rgba(255,255,255,.04) 1px, transparent 1px);
 
   background-size:
-    200% 200%,    /* conic wash */
-    100% 100%,    /* linear base */
-    120vw 120vh,  /* cyan blob   */
-    140vw 120vh,  /* magenta     */
-    160vw 140vh,  /* violet      */
-    300px 300px,  /* noise tile  */
-    30px 30px,    /* fine grid   */
-    60px 60px;    /* coarse grid */
+    100% 100%,
+    130vw 130vh,
+    150vw 130vh,
+    170vw 150vh,
+    120vw 60vh,
+    300px 300px,
+    30px 30px,
+    60px 60px;
 
   background-position:
-    50% 50%,
     0% 0%,
     0% 0%,
     0% 0%,
     0% 0%,
+    0% 100%,
     0% 0%,
     0% 0%,
     0% 0%;
@@ -112,84 +114,85 @@ html{
     no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat;
 
   background-blend-mode:
-    normal, normal, normal, normal, normal, soft-light, normal, normal;
+    normal, normal, normal, normal, multiply, soft-light, normal, normal;
 
-  /* Pin to viewport on desktop so it never “slides off” */
-  background-attachment: fixed, fixed, fixed, fixed, fixed, fixed, fixed, fixed;
+  /* Pin to viewport on desktop */
+  background-attachment:
+    fixed, fixed, fixed, fixed, fixed, fixed, fixed, fixed;
 
-  animation: bg-drift 28s linear infinite;
-  will-change: background-position;
-  transform: translateZ(0);
-  filter: saturate(105%) contrast(102%);
+  animation:bg-drift 28s linear infinite;
+  will-change:background-position;
+  transform:translateZ(0);
+  filter:saturate(106%) contrast(102%);
 }
 
-/* iOS Safari: avoid fixed+pinch jank by letting it scroll */
-@supports (-webkit-touch-callout: none) {
-  html { background-attachment: scroll, scroll, scroll, scroll, scroll, scroll, scroll, scroll; }
+/* iOS Safari: avoid fixed+pinch jank */
+@supports (-webkit-touch-callout: none){
+  html{ background-attachment:scroll,scroll,scroll,scroll,scroll,scroll,scroll,scroll; }
 }
 
-/* Gentle drift for the blobs (base washes stay steady) */
+/* Gentle drift for blobs only (wash/noise/grid stay steady) */
 @keyframes bg-drift{
   0%{
     background-position:
-      50% 50%,
       0% 0%,
       0% 0%,
       0% 0%,
       0% 0%,
+      0% 100%,
       0% 0%,
       0% 0%,
       0% 0%;
   }
   50%{
     background-position:
-      48% 52%,
       0% 0%,
-      8% 3%,
+      7% 3%,
       -6% 4%,
       2% -4%,
+      0% 100%,
       0% 0%,
       0% 0%,
       0% 0%;
   }
   100%{
     background-position:
-      50% 50%,
       0% 0%,
       0% 0%,
       0% 0%,
       0% 0%,
+      0% 100%,
       0% 0%,
       0% 0%,
       0% 0%;
   }
 }
 
-/* Motion preference */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce){ html{ animation:none; } }
 
 /* --------------------------------------------------------------------------
    4) Layout primitives
    -------------------------------------------------------------------------- */
 .container{
-  width: min(1100px, 92%);
-  margin: 0 auto;
-  padding: 3rem 0 6rem;
-  position: relative;
-  z-index: 0; /* above background, below sticky header */
-  background: transparent; /* no local panels */
+  width:min(1100px,92%);
+  margin:0 auto;
+  padding:3rem 0 6rem;
+  position:relative;
+  z-index:0;
+  background:transparent; /* never paint panels here */
 }
 
 /* --------------------------------------------------------------------------
    5) Header / navigation
    -------------------------------------------------------------------------- */
 .site-header{
-  position: sticky; top: 0; z-index: 10;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 1rem min(4vw,24px);
-  backdrop-filter: blur(8px);
-  background: color-mix(in oklab, var(--bg) 82%, transparent);
-  border-bottom: 1px solid var(--card-border);
+  position:sticky; top:0; z-index:10;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1rem min(4vw,24px);
+  backdrop-filter:blur(8px);
+  background:color-mix(in srgb, var(--bg) 85%, transparent); /* srgb mix = widely supported */
+  border-bottom:1px solid var(--card-border);
 }
 .brand{ font-weight:700; color:var(--fg); text-decoration:none; }
 .nav{ display:flex; gap:1rem; align-items:center; }
@@ -198,7 +201,7 @@ html{
   padding:.25rem .5rem; border-radius:8px;
 }
 .nav-link:hover, .nav-link.active{
-  color:var(--fg); background: var(--card-border);
+  color:var(--fg); background:var(--card-border);
 }
 #themeToggle{
   border:1px solid var(--card-border);
@@ -207,22 +210,22 @@ html{
 }
 
 /* --------------------------------------------------------------------------
-   6) Hero (content only; no backgrounds here)
+   6) Hero (content only)
    -------------------------------------------------------------------------- */
 .hero{
   display:grid;
   grid-template-columns:140px 1fr;
   gap:2rem; align-items:center;
   margin-top:2rem;
-  background: transparent; /* ensure no local paint */
+  background:transparent;
 }
 .headshot{
   width:140px; height:140px; border-radius:50%;
   object-fit:cover; border:2px solid var(--card-border);
 }
 .hero-copy h1{
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  margin: 0; font-family: "IBM Plex Serif", serif;
+  font-size:clamp(1.8rem,3vw,2.6rem);
+  margin:0; font-family:"IBM Plex Serif",serif;
 }
 .tagline{ margin-top:.5rem; color:var(--muted); font-size:1.05rem; }
 .lede{ margin-top:1rem; line-height:1.7; }
@@ -243,15 +246,15 @@ html{
 @media (max-width:900px){ .grid-sleek{ grid-template-columns:1fr; } }
 
 .item-card{
-  background: color-mix(in oklab, var(--card) 92%, transparent);
-  border: 1px solid var(--card-border);
-  border-radius: 14px;
-  padding: 1rem 1.1rem;
-  transition: transform .18s ease, border-color .18s ease, background-color .18s ease;
+  background:color-mix(in srgb, var(--card) 92%, transparent);
+  border:1px solid var(--card-border);
+  border-radius:14px;
+  padding:1rem 1.1rem;
+  transition:transform .18s ease, border-color .18s ease, background-color .18s ease;
 }
 .item-card:hover{
-  transform: translateY(-1.5px);
-  border-color: color-mix(in oklab, var(--accent) 30%, var(--card-border));
+  transform:translateY(-1.5px);
+  border-color:color-mix(in srgb, var(--accent) 30%, var(--card-border));
 }
 .item-head{ display:flex; align-items:baseline; justify-content:space-between; gap:.75rem; }
 .item-title{ margin:0; font-size:1.05rem; font-weight:600; }
@@ -269,10 +272,10 @@ html{
 .pub-list{ margin-top:1rem; display:grid; gap:10px; }
 .pub-item{
   border:1px solid var(--card-border);
-  border-left:3px solid color-mix(in oklab, var(--accent) 65%, var(--card-border));
+  border-left:3px solid color-mix(in srgb, var(--accent) 65%, var(--card-border));
   border-radius:12px; overflow:hidden;
   padding:.9rem 1rem;
-  background:color-mix(in oklab, var(--card) 94%, transparent);
+  background:color-mix(in srgb, var(--card) 94%, transparent);
 }
 .pub-title{ margin:0; font-weight:600; }
 .pub-meta{ color:var(--muted); font-size:.9rem; margin-top:.2rem; }
@@ -281,13 +284,13 @@ html{
 .timeline{ position:relative; margin-top:1rem; }
 .timeline::before{
   content:""; position:absolute; left:10px; top:0; bottom:0; width:2px;
-  background:color-mix(in oklab, var(--fg) 10%, transparent);
+  background:color-mix(in srgb, var(--fg) 10%, transparent);
 }
 .ti{ position:relative; padding-left:30px; margin-bottom:14px; }
 .ti::before{
   content:""; position:absolute; left:4px; top:.35rem; width:12px; height:12px;
   border-radius:999px; background:var(--accent);
-  box-shadow:0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
 }
 .ti-head{ display:flex; gap:.5rem; flex-wrap:wrap; align-items:baseline; }
 .ti-role{ font-weight:700; }
