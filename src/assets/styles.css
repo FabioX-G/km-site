@@ -1,55 +1,43 @@
 /* ==========================================================================
-   Kelvin Mo — Site Styles (robust, glowing, future-proof)
+   Kelvin Mo — Site Styles (single-layer cyberpunk background)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
    1) Design tokens
    -------------------------------------------------------------------------- */
 :root{
-  /* Dark theme */
-  --bg: #0b1020;
-  --bg-alt: #0f1530;
+  /* Dark */
+  --bg: #0b1020;          /* base canvas */
   --fg: #e6e9f2;
-  --muted: #aab3c5;
-  --accent: #7bdff2;
+  --muted:#aab3c5;
+  --accent:#7bdff2;
 
-  --card: #121939;
-  --card-border: rgba(255,255,255,.08);
+  --card:#121939;
+  --card-border:rgba(255,255,255,.08);
 
-  /* Neon colors (both hex and rgba for compatibility) */
-  --neon-cyan:   #33e1ff;
-  --neon-magenta:#ff3d9a;
-  --neon-violet: #8a5cff;
+  /* Neon */
+  --c-cyan:    51,225,255;  /* rgb() triplets for reuse */
+  --c-violet: 138, 92,255;
+  --c-mag:    255, 61,154;
 
-  --neon-cyan-24:    rgba(51,225,255,.24);
-  --neon-magenta-20: rgba(255,61,154,.20);
-  --neon-violet-18:  rgba(138,92,255,.18);
-
-  /* Links (dark) */
-  --link: #9bd6ff;
-  --link-hover: #d5f1ff;
-  --link-underline: rgba(155,214,255,.45);
+  /* Links */
+  --link:#9bd6ff;
+  --link-hover:#d5f1ff;
+  --link-underline:rgba(155,214,255,.45);
 }
 
-/* Light theme with a faint color tint (prevents flat white areas) */
 html[data-theme="light"]{
-  --bg: #eef6ff;      /* soft blue */
-  --bg-alt: #fff0f9;  /* soft magenta */
-  --fg: #0a0a0a;
-  --muted: #586071;
-  --accent: #0ea5e9;
+  --bg:#eef6ff;
+  --fg:#0a0a0a;
+  --muted:#586071;
+  --accent:#0ea5e9;
 
-  --card: #ffffff;
-  --card-border: rgba(0,0,0,.08);
+  --card:#ffffff;
+  --card-border:rgba(0,0,0,.08);
 
   --link:#0a66ff;
   --link-hover:#084ccc;
-  --link-underline: rgba(10,102,255,.35);
-
-  /* Slightly lighter glow in light mode (looks airy, not heavy) */
-  --neon-cyan-24:    rgba(51,225,255,.20);
-  --neon-magenta-20: rgba(255,61,154,.18);
-  --neon-violet-18:  rgba(138,92,255,.16);
+  --link-underline:rgba(10,102,255,.35);
 }
 
 /* --------------------------------------------------------------------------
@@ -60,77 +48,82 @@ html, body{ height:100%; min-height:100%; margin:0; padding:0; }
 body{
   font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans";
   color:var(--fg);
-  background:transparent;           /* root owns the paint */
+  background:transparent;
   overflow-x:hidden;
   position:relative;
 }
 
 /* --------------------------------------------------------------------------
-   3) Fundamental background (ROOT)
-      - No color-mix; just rgba/oklch so Chrome/Safari/Firefox all agree
-      - Layers are > viewport to avoid holes at any zoom/aspect
-      - Fixed on desktop; scroll on iOS for pinch-zoom smoothness
-   -------------------------------------------------------------------------- */
-/* --------------------------------------------------------------------------
-   3) Fundamental background (ROOT) — single unified layer (radial)
+   3) Fundamental background (ROOT) — ONE LAYER ONLY
+      A single conic+radial hybrid look using conic-gradient with soft alpha.
+      No background-attachment tricks; animation rotates + gently pans.
    -------------------------------------------------------------------------- */
 
-/* We keep the body transparent; html owns the canvas */
+/* Smoothly animatable custom property for the gradient angle */
+@property --km-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+
 html, body { background: transparent; }
 
 html{
-  /* Base fill behind the gradient */
   background-color: var(--bg);
 
-  /* ONE layer only: a big radial gradient that blends cyan → violet → magenta
-     into the base color. Oversized so it always covers every aspect ratio.   */
-  background-image: radial-gradient(
-    180% 160% at 42% 34%,
-    rgba(51, 225, 255, 0.26) 0%,    /* cyan glow */
-    rgba(51, 225, 255, 0.12) 28%,
-    rgba(138, 92, 255, 0.18) 55%,   /* violet */
-    rgba(255, 61, 154, 0.20) 78%,   /* magenta */
-    var(--bg) 100%                  /* fade to base */
-  );
+  /* ONE unified layer */
+  /* The palette: cyan (0deg) → violet (150deg) → magenta (300deg) → back to cyan.
+     Alphas tuned for “sleek” rather than loud. We run the conic over a large
+     canvas and fade to base near the seam to avoid spokes.                     */
+  --km-angle: 0deg;
+  background-image:
+    conic-gradient(
+      from var(--km-angle) at 48% 38%,
+      rgba(var(--c-cyan),   .22)   0deg,
+      rgba(var(--c-cyan),   .12)  70deg,
+      rgba(var(--c-violet), .18) 150deg,
+      rgba(var(--c-mag),    .20) 300deg,
+      rgba(var(--c-cyan),   .22) 360deg
+    );
 
-  /* Oversize + center, then do a very gentle drift */
-  background-size: 170% 170%;
-  background-position: 50% 42%;
+  /* Oversize to ensure full-bleed coverage at any aspect/zoom */
+  background-size: 220% 220%;
+  background-position: 52% 46%;
   background-repeat: no-repeat;
 
-  /* Smooth, unified motion (no attachment tricks = iOS friendly) */
-  animation: kmAurora 36s ease-in-out infinite alternate;
+  /* Subtle unified motion (great on iOS & desktop) */
+  animation: km-aurora-rotate 36s linear infinite,
+             km-aurora-drift  18s ease-in-out infinite alternate;
 
-  /* Subtle “polish” */
-  filter: saturate(108%) contrast(102%);
-  will-change: background-position, background-size;
+  will-change: background-image, background-position, background-size;
   transform: translateZ(0);
+  filter: saturate(108%) contrast(102%);
 }
 
-/* Light theme: same single layer, just softer alphas so it stays airy */
+/* Light mode = same layer, softer alphas for an airy look */
 html[data-theme="light"]{
-  background-image: radial-gradient(
-    180% 160% at 42% 34%,
-    rgba(51, 225, 255, 0.22) 0%,
-    rgba(51, 225, 255, 0.10) 28%,
-    rgba(138, 92, 255, 0.14) 55%,
-    rgba(255, 61, 154, 0.18) 78%,
-    var(--bg) 100%
-  );
+  background-image:
+    conic-gradient(
+      from var(--km-angle) at 48% 38%,
+      rgba(var(--c-cyan),   .18)   0deg,
+      rgba(var(--c-cyan),   .10)  70deg,
+      rgba(var(--c-violet), .14) 150deg,
+      rgba(var(--c-mag),    .18) 300deg,
+      rgba(var(--c-cyan),   .18) 360deg
+    );
 }
 
-/* Unified single-layer motion:
-   - tiny pan (X/Y) and a small size pulse for a living, sleek feel */
-@keyframes kmAurora{
-  0%   { background-position: 48% 40%; background-size: 168% 168%; }
-  50%  { background-position: 52% 45%; background-size: 174% 174%; }
-  100% { background-position: 49% 42%; background-size: 170% 170%; }
+/* Angle rotation (single property anim = no seam artifacts) */
+@keyframes km-aurora-rotate { to { --km-angle: 360deg; } }
+
+/* Gentle position/scale drift for “living” feel */
+@keyframes km-aurora-drift{
+  0%   { background-position: 50% 44%; background-size: 215% 215%; }
+  50%  { background-position: 54% 48%; background-size: 225% 225%; }
+  100% { background-position: 52% 46%; background-size: 220% 220%; }
 }
 
-/* Respect motion preferences */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce){
-  html { animation: none; }
+  html{ animation: none; }
 }
+
 /* --------------------------------------------------------------------------
    4) Layout primitives
    -------------------------------------------------------------------------- */
@@ -140,7 +133,7 @@ html[data-theme="light"]{
   padding:3rem 0 6rem;
   position:relative;
   z-index:0;
-  background:transparent; /* never paint panels here */
+  background:transparent;
 }
 
 /* --------------------------------------------------------------------------
@@ -151,7 +144,7 @@ html[data-theme="light"]{
   display:flex; align-items:center; justify-content:space-between;
   padding:1rem min(4vw,24px);
   backdrop-filter:blur(8px);
-  background:color-mix(in srgb, var(--bg) 85%, transparent); /* srgb mix = widely supported */
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
   border-bottom:1px solid var(--card-border);
 }
 .brand{ font-weight:700; color:var(--fg); text-decoration:none; }
@@ -206,7 +199,7 @@ html[data-theme="light"]{
 @media (max-width:900px){ .grid-sleek{ grid-template-columns:1fr; } }
 
 .item-card{
-  background:color-mix(in srgb, var(--card) 92%, transparent);
+  background: color-mix(in srgb, var(--card) 92%, transparent);
   border:1px solid var(--card-border);
   border-radius:14px;
   padding:1rem 1.1rem;
