@@ -1,32 +1,106 @@
 ---
 layout: base
-title: Kelvin Mo — Harvard BBS PhD
+title: Kelvin Mo - Harvard BBS PhD
 description: Kelvin Mo is a Harvard BBS PhD student working at the intersection of cancer immunology and computation.
 permalink: "/"
 ---
 {% include "components/hero.njk" %}
 
-<section class="home-grid">
-  <div class="home-card">
-    <h2>Hacking the Academic System</h2>
-    <p>As an undergraduate in the Mackall Lab at Stanford, I bridged a gap between wet-lab and computation by proposing
-      and executing an independent analysis of the first on-treatment scRNA-seq dataset for CAR T-cell therapy.</p>
-    <a href="/about/">Read the story →</a>
+<section class="section about-preview" aria-labelledby="about-preview-title">
+  <div class="section-head">
+    <h2 id="about-preview-title">About Kelvin</h2>
+    <a class="item-link" href="/about/">Read full profile -></a>
   </div>
-  <div class="home-card">
-    <h2>Highlighted Projects</h2>
-    <ul class="bullets">
-      <li>Graph neural networks for spatial transcriptomics (CosMx)</li>
-      <li>Novartis: antibody discovery ML pipeline</li>
-      <li>Genentech: bioreactor control system</li>
-      <li>Stanford: tumor microenvironment framework</li>
-      <li>Manometry pipeline (DDW 2021)</li>
-    </ul>
-    <a href="/projects/">See all projects →</a>
+  <div class="about-grid">
+    <div class="about-narrative">
+      {% for paragraph in profile.about.narrative | slice(0, 2) %}
+        <p>{{ paragraph }}</p>
+      {% endfor %}
+    </div>
+    <div class="about-pillars">
+      <ul role="list">
+        {% for pillar in profile.about.pillars %}
+          <li>
+            <h3>{{ pillar.title }}</h3>
+            <p>{{ pillar.body }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
-  <div class="home-card">
-    <h2>Publications & Awards</h2>
-    <p>Curated selections with plain-English summaries.</p>
-    <a href="/publications/">Browse publications →</a>
+</section>
+
+<section class="section story-preview" aria-labelledby="story-title">
+  <div class="story-card">
+    <div class="story-copy">
+      <h2 id="story-title">{{ profile.story.title }}</h2>
+      <p class="story-subtitle">{{ profile.story.subtitle }}</p>
+      {% for paragraph in profile.story.narrative %}
+        <p>{{ paragraph }}</p>
+      {% endfor %}
+      <a class="item-link" href="/about/">See the full journey -></a>
+    </div>
+    <div class="story-highlights" aria-label="Story highlights">
+      <ul role="list">
+        {% for highlight in profile.story.highlights %}
+          <li>
+            <span class="story-label">{{ highlight.label }}</span>
+            <span class="story-detail">{{ highlight.detail }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% set featuredProjects = profile.projects | slice(0, 3) %}
+<section class="section" aria-labelledby="projects-preview-title">
+  <div class="section-head">
+    <h2 id="projects-preview-title">Translational builds</h2>
+    <a class="item-link" href="/projects/">Explore every project -></a>
+  </div>
+  <div class="grid-sleek">
+    {% for project in featuredProjects %}
+      {% set title = project.title %}
+      {% set org = project.org %}
+      {% set timeline = project.timeline %}
+      {% set summary = project.summary %}
+      {% set outcome = project.outcome %}
+      {% set badge = project.badge %}
+      {% set tags = project.tags %}
+      {% set link = project.link %}
+      {% include "components/pub-sleek.njk" %}
+    {% endfor %}
+  </div>
+</section>
+
+{% set featuredPubs = profile.publications | slice(0, 2) %}
+<section class="section" aria-labelledby="pub-preview-title">
+  <div class="section-head">
+    <h2 id="pub-preview-title">Publications & Awards</h2>
+    <a class="item-link" href="/publications/">Browse the full list -></a>
+  </div>
+  <div class="pub-list">
+    {% for item in featuredPubs %}
+      {% set title = item.title %}
+      {% set venue = item.venue %}
+      {% set year = item.year %}
+      {% set blurb = item.blurb %}
+      {% set contribution = item.contribution %}
+      {% set link = item.link %}
+      {% include "components/pub-sleek.njk" %}
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section contact-preview" aria-labelledby="contact-title">
+  <div class="contact-card">
+    <h2 id="contact-title">Let us collaborate</h2>
+    <p>{{ profile.contact.note }}</p>
+    <div class="contact-links">
+      <a href="mailto:{{ profile.contact.email }}">Email Kelvin</a>
+      <a href="{{ profile.contact.linkedin }}">LinkedIn</a>
+      <a href="{{ profile.contact.github }}">GitHub</a>
+    </div>
   </div>
 </section>

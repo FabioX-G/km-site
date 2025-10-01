@@ -1,0 +1,90 @@
+---
+layout: base
+title: About Kelvin Mo
+description: Kelvin Mo is a Harvard BBS PhD student building translational cancer immunology programs powered by computation.
+permalink: "/about/"
+---
+<section class="section page-intro" aria-labelledby="about-title">
+  <div class="section-head">
+    <h1 id="about-title">About Kelvin Mo</h1>
+  </div>
+  <div class="longform">
+    {% for paragraph in profile.about.narrative %}
+      <p>{{ paragraph }}</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section about-pillars-full" aria-label="Operating system">
+  <div class="pillars-grid">
+    {% for pillar in profile.about.pillars %}
+      <article class="pillar-card">
+        <h2>{{ pillar.title }}</h2>
+        <p>{{ pillar.body }}</p>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section story-expand" aria-labelledby="story-expand-title">
+  <div class="section-head">
+    <h2 id="story-expand-title">Story: hacking the academic system</h2>
+  </div>
+  <div class="story-grid">
+    <div class="story-main">
+      {% for paragraph in profile.story.narrative %}
+        <p>{{ paragraph }}</p>
+      {% endfor %}
+    </div>
+    <aside class="story-side" aria-label="Highlights">
+      <h3>Highlights</h3>
+      <ul role="list">
+        {% for highlight in profile.story.highlights %}
+          <li>
+            <span class="story-label">{{ highlight.label }}</span>
+            <span class="story-detail">{{ highlight.detail }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<section class="section focus-area" aria-labelledby="focus-title">
+  <div class="section-head">
+    <h2 id="focus-title">Current focus</h2>
+  </div>
+  <ul class="focus-list" role="list">
+    {% for item in profile.hero.focus %}
+      <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="section" aria-labelledby="education-title">
+  <div class="section-head">
+    <h2 id="education-title">Education</h2>
+  </div>
+  {% set items = profile.education %}
+  {% include "components/timeline.njk" %}
+</section>
+
+<section class="section" aria-labelledby="experience-title">
+  <div class="section-head">
+    <h2 id="experience-title">Experience</h2>
+  </div>
+  {% set items = profile.experience %}
+  {% include "components/timeline.njk" %}
+</section>
+
+<section class="section contact-inline" aria-labelledby="about-contact-title">
+  <div class="contact-card">
+    <h2 id="about-contact-title">Reach out</h2>
+    <p>{{ profile.contact.note }}</p>
+    <div class="contact-links">
+      <a href="mailto:{{ profile.contact.email }}">Email Kelvin</a>
+      <a href="{{ profile.contact.linkedin }}">LinkedIn</a>
+      <a href="{{ profile.contact.github }}">GitHub</a>
+    </div>
+  </div>
+</section>

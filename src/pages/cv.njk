@@ -1,45 +1,30 @@
 ---
 layout: base
 title: CV / Background
-description: Kelvin Mo CV and background
+description: Kelvin Mo background across education, research, and industry.
 permalink: "/cv/"
-education:
-  - role: PhD, Biological & Biomedical Sciences (BBS)
-    org: Harvard University
-    dates: 2025–present
-    desc: Focus on cancer immunology, single-cell/spatial methods, and ML for biology.
-  - role: B.S., Biology & Data Science
-    org: UC San Diego → UC Berkeley
-    dates: 2019–2024
-    desc: Foundation in molecular biology and computational analysis.
-experience:
-  - role: Researcher (Mackall Lab) — CAR T & Tumor Microenvironment
-    org: Stanford University
-    dates: 2022–2025
-    points:
-      - Multi-omic single-cell analysis linking CAR T dysfunction and myeloid programs to resistance.
-      - Spatial transcriptomics (CosMx) + GNNs to map immune–tumor niches.
-      - Built interpretable multimodal AI (tcellGPT foundation).
-  - role: ML Engineer — Antibody Discovery
-    org: Novartis
-    dates: 2023
-    points:
-      - End-to-end candidate triage models and affinity prediction.
-      - Improved hit-rate and decision velocity.
-  - role: Systems Engineer — Bioreactor Control
-    org: Genentech
-    dates: 2022
-    points:
-      - Control algorithms and telemetry dashboards for stable bioprocess ops.
 ---
-<div class="section-head"><h1>CV / Background</h1></div>
+<section class="section page-intro" aria-labelledby="cv-title">
+  <div class="section-head">
+    <h1 id="cv-title">CV / Background</h1>
+  </div>
+  <p class="page-lede">A snapshot of the academic path and translational industry experience that shape my research agenda.</p>
+</section>
 
-<h2>Education</h2>
-{% set items = education %}
-{% include "components/timeline.njk" %}
+<section class="section" aria-labelledby="cv-education-title">
+  <div class="section-head">
+    <h2 id="cv-education-title">Education</h2>
+  </div>
+  {% set items = profile.education %}
+  {% include "components/timeline.njk" %}
+</section>
 
-<h2>Experience</h2>
-{% set items = experience %}
-{% include "components/timeline.njk" %}
+<section class="section" aria-labelledby="cv-experience-title">
+  <div class="section-head">
+    <h2 id="cv-experience-title">Experience</h2>
+  </div>
+  {% set items = profile.experience %}
+  {% include "components/timeline.njk" %}
+</section>
 
-<p><a class="item-link" href="#">Download full CV (PDF) →</a></p>
+<p><a class="item-link" href="#">Download full CV (PDF) -></a></p>

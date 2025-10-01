@@ -1,15 +1,25 @@
-<section class="hero">
-  <img class="headshot" src="{{ site.author.headshot }}" alt="Headshot of {{ site.author.name }}">
+{% set hero = profile.hero %}
+<section class="hero" aria-labelledby="hero-title">
+  <figure class="hero-photo">
+    <img class="headshot" src="{{ site.author.headshot }}" alt="Headshot of {{ site.author.name }}">
+  </figure>
   <div class="hero-copy">
-    <h1>{{ site.title }}</h1>
-    <p class="tagline">{{ site.tagline }}</p>
-    <p class="lede">
-      First-year PhD student in Biological and Biomedical Sciences at Harvard. I build at the interface of
-      cancer immunology and computation—aiming to translate insights into better therapies and mentor the next generation.
-    </p>
-    <div class="cta">
-      <a class="btn" href="/projects/">Projects</a>
-      <a class="btn ghost" href="/publications/">Publications</a>
-    </div>
+    <h1 id="hero-title">{{ hero.title }}</h1>
+    <p class="tagline">{{ hero.tagline }}</p>
+    <p class="lede">{{ hero.lede }}</p>
+    {% if hero.focus %}
+      <ul class="hero-focus" role="list">
+        {% for item in hero.focus %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% if hero.actions %}
+      <div class="cta">
+        {% for action in hero.actions %}
+          <a class="btn{% if action.kind == "secondary" %} ghost{% endif %}" href="{{ action.url }}">{{ action.label }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
   </div>
 </section>
