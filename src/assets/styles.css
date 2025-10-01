@@ -374,3 +374,23 @@ main li{ line-height:1.8; }
 
 /* Footer links: reduce underline noise but keep contrast */
 .site-footer a{ text-decoration-thickness:.08rem; }
+
+/* --- Kill any leftover hero-local overlays so the ROOT background is the only one --- */
+.hero,
+.hero::before,
+.hero::after,
+.hero [class*="bg"],
+.hero [class*="gradient"],
+.hero [class*="overlay"] {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* If a fixed-position hero layer was previously used, turn it off decisively */
+body::before,
+body::after {
+  content: none !important;
+}
+
+/* Ensure no container paints a panel behind the hero */
+.container { background: transparent !important; }
