@@ -1,9 +1,20 @@
 <header class="site-header">
   <a class="brand" href="/">Kelvin Mo</a>
-  <nav class="nav">
-    {% for item in site.nav %}
-      <a href="{{ item.url }}" class="nav-link{% if page.url == item.url %} active{% endif %}">{{ item.title }}</a>
-    {% endfor %}
-    <button id="themeToggle" aria-label="Toggle theme">◐</button>
+
+  <!-- 横向滑动的导航（手机上一指左右拖动） -->
+  <nav class="nav-scroller" aria-label="Primary">
+    <ul class="nav" role="list">
+      {% for item in site.nav %}
+        <li>
+          <a href="{{ item.url }}"
+             class="nav-link{% if page.url == item.url %} active{% endif %}">
+            {{ item.title }}
+          </a>
+        </li>
+      {% endfor %}
+      <li>
+        <button id="themeToggle" aria-label="Toggle theme" type="button">◐</button>
+      </li>
+    </ul>
   </nav>
 </header>

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Kelvin Mo — Site Styles (single-layer cyberpunk background)
+   Kelvin Mo — Site Styles (clean, unified, iOS-stable)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -7,7 +7,7 @@
    -------------------------------------------------------------------------- */
 :root{
   /* Dark */
-  --bg: #0b1020;          /* base canvas */
+  --bg: #0b1020;
   --fg: #e6e9f2;
   --muted:#aab3c5;
   --accent:#7bdff2;
@@ -15,15 +15,17 @@
   --card:#121939;
   --card-border:rgba(255,255,255,.08);
 
-  /* Neon */
-  --c-cyan:    51,225,255;  /* rgb() triplets for reuse */
-  --c-violet: 138, 92,255;
-  --c-mag:    255, 61,154;
+  /* Neon RGB triplets (for rgba reuse) */
+  --c-cyan:   51,225,255;
+  --c-violet:138, 92,255;
+  --c-mag:   255, 61,154;
 
   /* Links */
   --link:#9bd6ff;
   --link-hover:#d5f1ff;
   --link-underline:rgba(155,214,255,.45);
+
+  color-scheme: dark light;
 }
 
 html[data-theme="light"]{
@@ -45,33 +47,25 @@ html[data-theme="light"]{
    -------------------------------------------------------------------------- */
 *{ box-sizing:border-box; }
 html, body{ height:100%; min-height:100%; margin:0; padding:0; }
+html, body { background: transparent; }
 body{
   font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans";
   color:var(--fg);
-  background:transparent;
-  overflow-x:hidden;
+  overflow-x:hidden;         /* 文档层禁止横向滚动上下文 */
   position:relative;
 }
 
 /* --------------------------------------------------------------------------
-   3) Fundamental background (ROOT) — ONE LAYER ONLY
-      A single conic+radial hybrid look using conic-gradient with soft alpha.
-      No background-attachment tricks; animation rotates + gently pans.
+   3) Fundamental background — SINGLE LAYER, FULL-BLEED, iOS-SAFE
    -------------------------------------------------------------------------- */
-/* --------------------------------------------------------------------------
-   3) Fundamental background (ROOT) — SINGLE LAYER, FULL-BLEED, iOS-SAFE
-   -------------------------------------------------------------------------- */
-
-/* 可动画的角度变量（现代浏览器支持） */
+/* Animatable conic angle (modern browsers) */
 @property --km-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
 
-/* 关键点：html 与 body 都用同一背景，避免缩放时出现两层 */
-html, body { background: transparent; }
 html{
   --km-angle: 0deg;
   background-color: var(--bg);
 
-  /* 单层渐变：cyan→violet→magenta 的赛博“极光” */
+  /* 单层极光：cyan → violet → magenta（赛博但克制） */
   background-image: conic-gradient(
     from var(--km-angle) at 48% 38%,
     rgba(var(--c-cyan),   .26)   0deg,
@@ -81,12 +75,12 @@ html{
     rgba(var(--c-cyan),   .26) 360deg
   );
 
-  /* 超覆盖，确保任何长宽比/缩放下都不露底 */
+  /* 超覆盖，任何长宽比/缩放不露底 */
   background-size: 235% 235%;
   background-position: 52% 46%;
   background-repeat: no-repeat;
 
-  /* 单层的轻柔动态：角度旋转 + 细微平移/缩放（无 attachment，iOS 友好） */
+  /* 统一柔和动态：角度旋转 + 细微平移/缩放（不使用 attachment，iOS 友好） */
   animation: km-aurora-rotate 36s linear infinite,
              km-aurora-drift  18s ease-in-out infinite alternate;
 
@@ -95,7 +89,7 @@ html{
   filter: saturate(110%) contrast(103%);
 }
 
-/* Light 主题：同一层，稍微减弱透明度以保持清爽 */
+/* Light theme：同一层但更轻透明度 */
 html[data-theme="light"]{
   background-image: conic-gradient(
     from var(--km-angle) at 48% 38%,
@@ -114,14 +108,12 @@ html[data-theme="light"]{
   100% { background-position: 52% 46%; background-size: 235% 235%; }
 }
 
-/* 关闭动画（无障碍） */
 @media (prefers-reduced-motion: reduce){ html{ animation: none; } }
 
-/* ---- 统一透明：任何容器不许“自己涂背景”以免出现分层感 ---- */
-.site-header,
-.container,
-main, section, header, footer,
-.hero { background: transparent !important; }
+/* 任何容器不允许再涂自己背景（根为唯一背景所有者） */
+.site-header, .container, main, section, header, footer, .hero {
+  background: transparent !important;
+}
 
 /* --------------------------------------------------------------------------
    4) Layout primitives
@@ -132,41 +124,45 @@ main, section, header, footer,
   padding:3rem 0 6rem;
   position:relative;
   z-index:0;
-  background:transparent;
 }
 
 /* --------------------------------------------------------------------------
-   5) Header / navigation
+   5) Header / navigation（移动端可横滑，且不带动页面）
    -------------------------------------------------------------------------- */
 .site-header{
-  position:sticky; top:0; z-index:10;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:1rem min(4vw,24px);
-  backdrop-filter:blur(8px);
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: .75rem;
+  padding: 1rem min(4vw, 24px);
   border-bottom:1px solid var(--card-border);
-}
-.brand{ font-weight:700; color:var(--fg); text-decoration:none; }
-.nav{ display:flex; gap:1rem; align-items:center; }
-.nav-link{
-  color:var(--muted); text-decoration:none;
-  padding:.25rem .5rem; border-radius:8px;
-}
-.nav-link:hover, .nav-link.active{
-  color:var(--fg); background:var(--card-border);
-}
-#themeToggle{
-  border:1px solid var(--card-border);
-  background:transparent; color:var(--fg);
-  padding:.4rem .6rem; border-radius:8px; cursor:pointer;
+
+  /* 桌面端可用轻 blur；iOS 将在下面禁用以避免分层 */
+  backdrop-filter: blur(8px);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
 }
 
-/* 横向滑动容器：一指左右拖动 */
+/* iOS：禁用 blur，使用更实底色，避免独立合成层带来的“竖色带” */
+@supports (-webkit-touch-callout: none) {
+  .site-header{
+    backdrop-filter: none;
+    background: color-mix(in srgb, var(--bg) 92%, black 8%);
+  }
+}
+
+.brand{ flex: 0 0 auto; color:var(--fg); text-decoration:none; font-weight:700; }
+
 .nav-scroller{
-  overflow-x: auto;
-  overflow-y: hidden;
+  /* 让它占据剩余空间，并允许收缩触发 overflow */
+  flex: 1 1 auto;
+  min-width: 0;
+
+  /* 变成独立的横向滚动面板 */
+  overflow-x: auto; overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  /* 给用户一个“可滑动”的暗示：两端淡出遮罩 */
+  white-space: nowrap;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;   /* 阻断滚动链：不把横滑传给页面 */
+
+  /* 提示可滑动（可选淡出遮罩） */
   --fade: 16px;
   -webkit-mask-image: linear-gradient(to right,
       transparent 0, black var(--fade),
@@ -174,55 +170,37 @@ main, section, header, footer,
           mask-image: linear-gradient(to right,
       transparent 0, black var(--fade),
       black calc(100% - var(--fade)), transparent 100%);
-  touch-action: pan-x; /* 明确允许横向手势 */
-  scrollbar-width: none;              /* Firefox 隐藏滚动条 */
+
+  /* 隐藏滚动条 */
+  scrollbar-width: none;
 }
-.nav-scroller::-webkit-scrollbar{ display:none; }  /* WebKit 隐藏滚动条 */
+.nav-scroller::-webkit-scrollbar{ display:none; }
 
 .nav{
   display: inline-flex;
-  gap: .75rem;
-  align-items: center;
-  white-space: nowrap;   /* 不换行，超出就横向滚动 */
-  flex-wrap: nowrap;
-}
-.nav-link, #themeToggle{ flex: 0 0 auto; } /* 每个项都是固定宽度的“胶囊” */
-
-/* 1) 彻底禁止文档产生横向滚动条（防止页面被横向拖动） */
-html, body { overflow-x: hidden; }
-
-/* 2) 只让导航容器自己滚：阻断滚动链传递到页面 */
-.nav-scroller{
-  overscroll-behavior-x: contain;  /* 关键：手势停在此容器 */
-  max-width: 100vw;                /* 永远不比视口宽 */
-  width: 100%;
-}
-
-/* 3) Header 自身不允许内容溢出（避免两侧“露底”造成竖色带） */
-.site-header{ width:100vw; overflow: hidden; }
-
-/* 4) 导航条是单行“胶囊”，不会撑爆布局 */
-.nav{
-  display: inline-flex;
+  align-items:center;
+  gap:.75rem;
   flex-wrap: nowrap;
   white-space: nowrap;
+  margin:0; padding:0;
 }
-.nav-link, #themeToggle{ flex: 0 0 auto; }
+.nav > li{ list-style: none; }
 
-/* 5) iOS 上含 blur 的 header 容易触发独立合成层 → 产生“分层误差”
-      降级 blur 强度，并在 iOS 上改为更实的底色，避免产生竖向色带 */
-@supports (-webkit-touch-callout: none) {
-  .site-header{
-    backdrop-filter: none;                       /* 关闭 blur 降合成层数量 */
-    background: color-mix(in srgb, var(--bg) 92%, black 8%);
-  }
+.nav-link{
+  color:var(--muted); text-decoration:none;
+  padding:.25rem .5rem; border-radius:8px;
+  flex: 0 0 auto;
 }
-
-/* 6) 再次确保任何容器不自己“涂背景”（统一只有 html 那一层） */
-.site-header,
-.container,
-main, section, header, footer,
-.hero { background: transparent !important; }
+.nav-link:hover, .nav-link.active{
+  color:var(--fg);
+  background:var(--card-border);
+}
+#themeToggle{
+  border:1px solid var(--card-border);
+  background:transparent; color:var(--fg);
+  padding:.4rem .6rem; border-radius:8px; cursor:pointer;
+  flex: 0 0 auto;
+}
 
 /* --------------------------------------------------------------------------
    6) Hero (content only)
@@ -232,7 +210,6 @@ main, section, header, footer,
   grid-template-columns:140px 1fr;
   gap:2rem; align-items:center;
   margin-top:2rem;
-  background:transparent;
 }
 .headshot{
   width:140px; height:140px; border-radius:50%;
@@ -379,11 +356,8 @@ main li{ line-height:1.8; }
 .site-footer a{ text-decoration-thickness:.08rem; }
 
 /* --------------------------------------------------------------------------
-   11) Hard guarantees: no local hero/background overlays
+   11) Hard guarantees（清除遗留覆盖层）
    -------------------------------------------------------------------------- */
-
-/* 保证没有遗留的局部覆盖层（彻底禁用伪元素背景） */
 .hero::before, .hero::after,
 body::before, body::after { content:none !important; }
-/* 内容面板透明（你已有卡片样式，不需要额外底色） */
 .container { background: transparent !important; }
