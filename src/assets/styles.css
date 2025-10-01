@@ -58,49 +58,59 @@ body{
 /* --------------------------------------------------------------------------
    3) Fundamental background — SINGLE LAYER, FULL-BLEED, iOS-SAFE
    -------------------------------------------------------------------------- */
-/* Animatable conic angle (modern browsers) */
-@property --km-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
-
+/* 只保留底色在 html，上下文兜底；不再在 html 上画渐变 */
 html{
-  --km-angle: 0deg;
   background-color: var(--bg);
+  background-image: none;
+}
 
-  /* 单层极光：cyan → violet → magenta（赛博但克制） */
-  background-image: conic-gradient(
-    from var(--km-angle) at 48% 38%,
-    rgba(var(--c-cyan),   .26)   0deg,
-    rgba(var(--c-cyan),   .12)  70deg,
-    rgba(var(--c-violet), .20) 150deg,
-    rgba(var(--c-mag),    .24) 300deg,
-    rgba(var(--c-cyan),   .26) 360deg
-  );
+/* 把唯一的极光背景搬到 body：它随内容滚动，就不会出现“上下两张不同背景” */
+@property --km-angle { syntax:"<angle>"; inherits:false; initial-value:0deg; }
 
-  /* 超覆盖，任何长宽比/缩放不露底 */
+body{
+  /* 关键：唯一背景层在 body 上 */
+  --km-angle: 0deg;
+  background:
+    conic-gradient(
+      from var(--km-angle) at 48% 38%,
+      rgba(var(--c-cyan),   .26)   0deg,
+      rgba(var(--c-cyan),   .12)  70deg,
+      rgba(var(--c-violet), .20) 150deg,
+      rgba(var(--c-mag),    .24) 300deg,
+      rgba(var(--c-cyan),   .26) 360deg
+    );
   background-size: 235% 235%;
   background-position: 52% 46%;
   background-repeat: no-repeat;
 
-  /* 统一柔和动态：角度旋转 + 细微平移/缩放（不使用 attachment，iOS 友好） */
+  /* 平滑、统一的轻动效（不使用 attachment） */
   animation: km-aurora-rotate 36s linear infinite,
              km-aurora-drift  18s ease-in-out infinite alternate;
 
-  will-change: background-image, background-position, background-size;
+  /* 其余保持原样 */
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
+  color: var(--fg);
+  overflow-x: hidden;
+  min-height: 100%;
+  position: relative;
   transform: translateZ(0);
   filter: saturate(110%) contrast(103%);
 }
 
-/* Light theme：同一层但更轻透明度 */
-html[data-theme="light"]{
-  background-image: conic-gradient(
-    from var(--km-angle) at 48% 38%,
-    rgba(var(--c-cyan),   .22)   0deg,
-    rgba(var(--c-cyan),   .10)  70deg,
-    rgba(var(--c-violet), .16) 150deg,
-    rgba(var(--c-mag),    .20) 300deg,
-    rgba(var(--c-cyan),   .22) 360deg
-  );
+/* Light 主题：同一层，只调轻透明度 */
+html[data-theme="light"] body{
+  background:
+    conic-gradient(
+      from var(--km-angle) at 48% 38%,
+      rgba(var(--c-cyan),   .22)   0deg,
+      rgba(var(--c-cyan),   .10)  70deg,
+      rgba(var(--c-violet), .16) 150deg,
+      rgba(var(--c-mag),    .20) 300deg,
+      rgba(var(--c-cyan),   .22) 360deg
+    );
 }
 
+/* 动画沿用你现有的 keyframes */
 @keyframes km-aurora-rotate { to { --km-angle: 360deg; } }
 @keyframes km-aurora-drift{
   0%   { background-position: 50% 44%; background-size: 232% 232%; }
@@ -110,10 +120,14 @@ html[data-theme="light"]{
 
 @media (prefers-reduced-motion: reduce){ html{ animation: none; } }
 
-/* 任何容器不允许再涂自己背景（根为唯一背景所有者） */
+/* 任何容器不许再自己涂背景（避免第二层） */
 .site-header, .container, main, section, header, footer, .hero {
   background: transparent !important;
 }
+
+/* 关闭遗留伪元素背景层 */
+.hero::before, .hero::after,
+body::before, body::after { content: none !important; }
 
 /* --------------------------------------------------------------------------
    4) Layout primitives
