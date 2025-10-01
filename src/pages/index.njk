@@ -1,113 +1,40 @@
 ---
 layout: base
-title: Kelvin Mo - Harvard BBS PhD
-description: Kelvin Mo is a Harvard BBS PhD student working at the intersection of cancer immunology and computation.
+title: Kelvin (Chiu Ho) Mo - Harvard BBS PhD
+description: Kelvin (Chiu Ho) Mo is a Harvard BBS PhD student working at the intersection of cancer immunology and computation.
 permalink: "/"
+directory:
+  - label: About Kelvin
+    summary: Kelvin is a Harvard BBS PhD student designing translational systems that merge cancer immunology with computation.
+    url: "/about/"
+    action: Meet Kelvin
+  - label: Projects
+    summary: Translational builds spanning spatial GNNs, CAR T analytics, and bioprocess control.
+    url: "/projects/"
+    action: Explore builds
+  - label: Publications
+    summary: Curated papers and preprints distilled for collaborators and students.
+    url: "/publications/"
+    action: Browse publications
+  - label: CV / Background
+    summary: Education and experience powering Kelvin's lab-ready, cross-functional toolkit.
+    url: "/cv/"
+    action: View snapshot
+  - label: Contact
+    summary: Reach out for collaborations in cancer immunology, spatial omics, and ML for biology.
+    url: "/contact/"
+    action: Connect
 ---
 {% include "components/hero.njk" %}
 
-{% set previewProjects = profile.projects | slice(0, 4) %}
-{% set previewPublications = profile.publications | slice(0, 2) %}
-
-<section class="home-grid home-highlight" aria-label="Snapshot of Kelvin's work">
-  <article class="home-card">
-    <h2>{{ profile.story.title }}</h2>
-    <p class="card-lede">{{ profile.story.subtitle }}</p>
-    <p>{{ profile.story.narrative | first }}</p>
-    <a class="card-link" href="/about/">Read the story -></a>
-  </article>
-  <article class="home-card">
-    <h2>Highlighted Projects</h2>
-    <ul class="home-list">
-      {% for project in previewProjects %}
-        <li>{{ project.title }}</li>
-      {% endfor %}
-    </ul>
-    <a class="card-link" href="/projects/">See all projects -></a>
-  </article>
-  <article class="home-card">
-    <h2>Publications & Awards</h2>
-    <ul class="home-list">
-      {% for item in previewPublications %}
-        <li>{{ item.title }}</li>
-      {% endfor %}
-    </ul>
-    <a class="card-link" href="/publications/">Browse publications -></a>
-  </article>
-</section>
-
-<section class="section about-preview" aria-labelledby="about-preview-title">
-  <div class="section-head">
-    <h2 id="about-preview-title">About Kelvin</h2>
-    <a class="item-link" href="/about/">Read full profile -></a>
-  </div>
-  <div class="about-grid">
-    <div class="about-narrative">
-      {% for paragraph in profile.about.narrative | slice(0, 2) %}
-        <p>{{ paragraph }}</p>
-      {% endfor %}
-    </div>
-    <div class="about-pillars">
-      <ul role="list">
-        {% for pillar in profile.about.pillars %}
-          <li>
-            <h3>{{ pillar.title }}</h3>
-            <p>{{ pillar.body }}</p>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-</section>
-
-{% set featuredProjects = profile.projects | slice(0, 3) %}
-<section class="section" aria-labelledby="projects-preview-title">
-  <div class="section-head">
-    <h2 id="projects-preview-title">Translational builds</h2>
-    <a class="item-link" href="/projects/">Explore every project -></a>
-  </div>
-  <div class="grid-sleek">
-    {% for project in featuredProjects %}
-      {% set title = project.title %}
-      {% set org = project.org %}
-      {% set timeline = project.timeline %}
-      {% set summary = project.summary %}
-      {% set outcome = project.outcome %}
-      {% set badge = project.badge %}
-      {% set tags = project.tags %}
-      {% set link = project.link %}
-      {% include "components/project-item.njk" %}
+<section class="home-highlight" aria-label="Navigate Kelvin (Chiu Ho) Mo's work">
+  <div class="home-highlight-grid directory-grid">
+    {% for card in directory %}
+      <article class="home-card directory-card">
+        <h2>{{ card.label }}</h2>
+        <p>{{ card.summary }}</p>
+        <a class="card-link" href="{{ card.url }}">{{ card.action }} -></a>
+      </article>
     {% endfor %}
-  </div>
-</section>
-
-{% set featuredPubs = profile.publications | slice(0, 2) %}
-<section class="section" aria-labelledby="pub-preview-title">
-  <div class="section-head">
-    <h2 id="pub-preview-title">Publications & Awards</h2>
-    <a class="item-link" href="/publications/">Browse the full list -></a>
-  </div>
-  <div class="pub-list">
-    {% for item in featuredPubs %}
-      {% set title = item.title %}
-      {% set venue = item.venue %}
-      {% set year = item.year %}
-      {% set blurb = item.blurb %}
-      {% set contribution = item.contribution %}
-      {% set link = item.link %}
-      {% include "components/pub-sleek.njk" %}
-    {% endfor %}
-  </div>
-</section>
-
-<section class="section contact-preview" aria-labelledby="contact-title">
-  <div class="contact-card">
-    <h2 id="contact-title">Let us collaborate</h2>
-    <p>{{ profile.contact.note }}</p>
-    <div class="contact-links">
-      <a href="mailto:{{ profile.contact.email }}">Email Kelvin</a>
-      <a href="{{ profile.contact.linkedin }}">LinkedIn</a>
-      <a href="{{ profile.contact.github }}">GitHub</a>
-    </div>
   </div>
 </section>

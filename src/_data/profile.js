@@ -1,6 +1,6 @@
 module.exports = {
   hero: {
-    title: "Kelvin Mo",
+    title: "Kelvin (Chiu Ho) Mo",
     tagline: "Biologist, data scientist, and innovator at the intersection of cancer immunology and computation.",
     lede: "First-year PhD student in Harvard's Biological and Biomedical Sciences program. I design translational AI pipelines and experimental frameworks that turn single-cell and spatial data into decisions for patients.",
     focus: [
@@ -106,28 +106,84 @@ module.exports = {
 
   publications: [
     {
-      title: "IRF4/IRF8-mediated CAR T dysfunction and CCL8/CCL13+ TAM-driven resistance in LBCL",
-      venue: "Nature Medicine (in revision)",
-      year: "2025",
-      blurb: "Single-cell, spatial, and multi-omic integration revealing the immune circuits that suppress CAR T cells and how to counter them.",
-      contribution: "Co-led computational strategy and cross-cohort harmonization.",
-      link: "#"
-    },
-    {
-      title: "Spatial architecture of GD2 CAR-treated diffuse midline glioma",
-      venue: "Preprint in preparation",
+      title: "Single cell-resolution in situ sequencing reveals spatial dynamics of H3K27M-mutated diffuse midline gliomas and identifies myeloid-tumor cell interactions",
+      venue: "In preparation",
       year: "2024",
-      blurb: "CosMx-powered maps of GD2 CAR T therapy showing how tumor and myeloid neighborhoods rewire after treatment.",
-      contribution: "Developed graph models tying spatial niches to survival metrics.",
-      link: "#"
+      blurb: "High-resolution CosMx sequencing ties myeloid neighborhoods to H3K27M tumor evolution during GD2-CAR therapy.",
+      contribution: "Co-led spatial inferences and CAR T response analytics.",
+      link: null
     },
     {
-      title: "Automated high-resolution manometry pipeline",
-      venue: "Digestive Disease Week 2021",
+      title: "Pre-infusion biomarker classifier predicts lymphoma response and toxicity after CAR T cell",
+      venue: "In preparation",
+      year: "2024",
+      blurb: "Multi-cohort biomarker signature that stratifies outcomes prior to CAR T infusion in lymphoma.",
+      contribution: "Designed the machine learning stack and prospective validation pipeline.",
+      link: null
+    },
+    {
+      title: "CCL8/CCL13-producing tumor-associated macrophages linked to poor outcomes after CAR T cell therapy for LBCL",
+      venue: "Blood 144(Suppl. 1) · Cancer Cell (submitted)",
+      year: "2024",
+      blurb: "Connects chemokine-driven macrophage states with post-infusion CAR T failure and charts intervention points.",
+      contribution: "Led the single-cell integration and interactome modeling.",
+      link: "https://ashpublications.org/blood/article/144/Supplement_1/4752/496067/CCL8-CCL13-Producing-Tumor-Associated"
+    },
+    {
+      title: "Unraveling temporal dynamics of GD2-CAR T cell therapy in H3K27M-mutant diffuse midline glioma through single-cell and multi-omic profiling",
+      venue: "In preparation",
+      year: "2024",
+      blurb: "Joint single-cell, spatial, and serum proteomic monitoring across GD2-CAR therapy.",
+      contribution: "Architected longitudinal data model and multi-omic harmonization.",
+      link: null
+    },
+    {
+      title: "Multiple instance learning identifies perturbation targets poised to improve clinical outcomes after CD19-CAR therapy for large B cell lymphoma",
+      venue: "In preparation",
+      year: "2024",
+      blurb: "Weakly supervised learning reveals cell states to target for durable CD19-CAR responses.",
+      contribution: "Developed the MIL framework and interpretability tooling.",
+      link: null
+    },
+    {
+      title: "Overcoming T cell tolerance to tumor self-antigens through catch-bond engineering",
+      venue: "Science (submitted)",
+      year: "2025",
+      blurb: "Catch-bond receptor engineering strategy that rescues self-antigen recognition for solid tumors.",
+      contribution: "Contributed translational analytics on engineered T cell persistence.",
+      link: null
+    },
+    {
+      title: "Pan-hematologic cancer predictive biomarkers for chimeric antigen receptor T-cell therapy",
+      venue: "Nature Biotechnology (submitted)",
+      year: "2024",
+      blurb: "Cross-indication biomarker atlas forecasting efficacy across hematologic CAR programs.",
+      contribution: "Built the harmonized feature store and calibration pipelines.",
+      link: null
+    },
+    {
+      title: "Spatial transcriptomics analysis of glioblastoma reveals three distinct regional programs of T-cell infiltration",
+      venue: "Neuro-Oncology 26(Suppl. 8) viii12",
+      year: "2024",
+      blurb: "Maps immune niches across glioblastoma and highlights infiltration programs for intervention.",
+      contribution: "Delivered spatial statistics and visual analytics for the abstract.",
+      link: "https://academic.oup.com/neuro-oncology/article/26/Supplement_8/viii12/7449396"
+    },
+    {
+      title: "CD22-targeted CAR T cell single cell multiomic features linked to immune effector cell-associated hemophagocytic lymphohistiocytosis-like syndrome",
+      venue: "Blood 144(Suppl. 1)",
+      year: "2024",
+      blurb: "Multiomic signatures that anticipate IEC-HLH-like toxicities after CD22-CAR therapy.",
+      contribution: "Co-developed the multiomic analysis and toxicity classifier.",
+      link: "https://ashpublications.org/blood/article-abstract/144/Supplement_1/4708/496191/CD22-Targeted-CAR-T-Cell-Single-Cell-Multiomic"
+    },
+    {
+      title: "Biomechanical analysis of swallow-induced primary peristalsis in patients with EGJOO",
+      venue: "Gastroenterology 160(6 Suppl. 1) S-102",
       year: "2021",
-      blurb: "Robust signal processing workflow that made GI motility analytics reproducible across clinical sites.",
-      contribution: "Architected the pipeline and visual analytics stack.",
-      link: "#"
+      blurb: "Quantified esophageal mechanics to differentiate EGJOO phenotypes using high-resolution manometry.",
+      contribution: "Implemented the biomechanics pipeline and visualization suite.",
+      link: "https://www.gastrojournal.org/article/S0016-5085(21)02031-4"
     }
   ],
 
@@ -135,53 +191,76 @@ module.exports = {
     {
       role: "PhD, Biological and Biomedical Sciences",
       org: "Harvard University",
-      dates: "2025 - present",
-      desc: "Cancer immunology, spatial omics, and machine learning guided therapy design."
+      dates: "Sep 2025 - Jun 2030",
+      desc: "Doctoral research aimed at programmable cancer immunotherapies and spatial immune modeling."
     },
     {
-      role: "B.S., Biology & Data Science",
-      org: "UC San Diego -> UC Berkeley",
-      dates: "2019 - 2024",
-      desc: "Double concentrated coursework in molecular biology, statistics, and machine learning."
+      role: "B.A., Data Science & Molecular and Cell Biology",
+      org: "University of California, Berkeley",
+      dates: "Sep 2021 - Dec 2023",
+      desc: "Integrated data science frameworks with advanced molecular biology to prototype translational pipelines."
+    },
+    {
+      role: "B.S., Bioinformatics & Computer Science",
+      org: "University of California, San Diego",
+      dates: "Sep 2019 - Jun 2021",
+      desc: "Built the computational tooling foundation that powers Kelvin's current lab work."
     }
   ],
 
   experience: [
     {
-      role: "Researcher, CAR T & tumor microenvironment",
-      org: "Stanford Medicine (Mackall Lab)",
-      dates: "2022 - present",
+      role: "Life Science Research Professional",
+      org: "Stanford University School of Medicine",
+      dates: "Mar 2023 - Present",
       points: [
-        "Multi-omic single-cell analysis linking CAR T exhaustion to myeloid chemokine circuits.",
-        "CosMx + GNN toolkit revealing spatial drivers of relapse in LBCL and DMG.",
-        "Co-led cross-lab data engineering that feeds prospective trials."
+        "Lead single-cell and spatial analysis for the Mackall Lab, uncovering resistance programs in CAR T trials.",
+        "Designed translational workflows that link clinician notes, wet-lab instrumentation, and ML pipelines in real time."
       ]
     },
     {
-      role: "ML Engineer, antibody discovery",
-      org: "Novartis",
-      dates: "2023",
-      points: [
-        "Automated antibody triage with structure-aware sequence embeddings.",
-        "Built experiment orchestration that shortened decision cycles for the wet lab."
-      ]
-    },
-    {
-      role: "Systems engineer, bioreactor control",
+      role: "Biotechnology Development Intern",
       org: "Genentech",
-      dates: "2022",
+      dates: "Jun 2022 - Dec 2022",
       points: [
-        "Developed adaptive control loops and telemetry dashboards for biologics manufacturing.",
-        "Improved process stability and reduced manual interventions during pilot runs."
+        "Developed adaptive control logic and telemetry dashboards for large-scale biologics manufacturing.",
+        "Partnered with ops teams to cut manual interventions across pilot runs."
       ]
     },
     {
-      role: "Research fellow, computational biology",
-      org: "Intel Labs",
-      dates: "2021",
+      role: "Data Science Intern",
+      org: "Novartis",
+      dates: "Jun 2021 - Aug 2021",
       points: [
-        "Explored accelerator-aware pipelines for large-scale biological simulations.",
-        "Published internal whitepapers on hardware-aware ML for omics workloads."
+        "Built antibody discovery ranking models using structure-aware embeddings.",
+        "Shaped end-to-end decision tooling that shortened wet-lab iteration cycles."
+      ]
+    },
+    {
+      role: "Data Science Intern",
+      org: "Intel Labs",
+      dates: "Jan 2021 - Oct 2021",
+      points: [
+        "Explored accelerator-aware compute strategies for large-scale biological simulations.",
+        "Authored internal briefs on hardware-conscious ML for omics workloads."
+      ]
+    },
+    {
+      role: "Lead Data Analyst",
+      org: "UC San Diego School of Medicine",
+      dates: "Mar 2020 - Jun 2021",
+      points: [
+        "Coordinated data ingestion and analytics for translational studies, pairing patient metadata with sequencing outputs.",
+        "Mentored undergraduate analysts to productionize reproducible pipelines."
+      ]
+    },
+    {
+      role: "Research Intern",
+      org: "Singlera Genomics",
+      dates: "Jul 2019 - Sep 2019",
+      points: [
+        "Shipped early prototypes for cfDNA analytics and assay QC dashboards.",
+        "Anchored Kelvin's transition from pure wet-lab work into computational biology."
       ]
     }
   ],
