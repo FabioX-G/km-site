@@ -394,3 +394,21 @@ body::after {
 
 /* Ensure no container paints a panel behind the hero */
 .container { background: transparent !important; }
+
+/* Make hero section fully transparent so only the ROOT background shows */
+section.hero,
+section.hero::before,
+section.hero::after,
+section.hero .hero-copy {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Nuke any legacy global overlays that might still exist */
+body::before,
+body::after {
+  content: none !important;
+}
+
+/* Safety: no container panels behind hero */
+.container { background: transparent !important; }
