@@ -1,0 +1,40 @@
+---
+layout: base
+title: Publications & Awards
+description: Selected publications by Kelvin Mo
+permalink: "/publications/"
+pubs:
+  - title: IRF4/IRF8-mediated CAR T dysfunction and CCL8/CCL13+ TAM-driven resistance in LBCL
+    venue: "In Revision"
+    status: "Target: Nature/Cell"
+    blurb: "Multi-omic single-cell and interactome study linking intratumoral CAR T exhaustion and myeloid programs to clinical resistance."
+    link: "#"
+
+  - title: Spatial architecture of GD2 CAR-treated diffuse midline glioma
+    venue: "Preprint (in prep)"
+    status: "CosMx + GNN"
+    blurb: "Reveals spatial immune–tumor niches predictive of treatment response using graph neural networks on high-plex data."
+    link: "#"
+
+  - title: Manometry analysis pipeline (DDW 2021)
+    venue: "Conference"
+    status: "Presented"
+    blurb: "A pipeline for robust signal processing and visualization of GI motility recordings."
+    link: "#"
+---
+
+<div class="section-head">
+  <h1>Publications & Awards</h1>
+</div>
+
+<section class="pub-list">
+  {% for item in pubs %}
+    {# Pass via locals (portable/safe across Nunjucks versions) #}
+    {% set title = item.title %}
+    {% set venue = item.venue %}
+    {% set status = item.status %}
+    {% set blurb = item.blurb %}
+    {% set link = item.link %}
+    {% include "components/pub-sleek.njk" %}
+  {% endfor %}
+</section>

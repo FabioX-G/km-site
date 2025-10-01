@@ -1,0 +1,45 @@
+---
+layout: base
+title: CV / Background
+description: Kelvin Mo CV and background
+permalink: "/cv/"
+education:
+  - role: PhD, Biological & Biomedical Sciences (BBS)
+    org: Harvard University
+    dates: 2025–present
+    desc: Focus on cancer immunology, single-cell/spatial methods, and ML for biology.
+  - role: B.S., Biology & Data Science
+    org: UC San Diego → UC Berkeley
+    dates: 2019–2024
+    desc: Foundation in molecular biology and computational analysis.
+experience:
+  - role: Researcher (Mackall Lab) — CAR T & Tumor Microenvironment
+    org: Stanford University
+    dates: 2022–2025
+    points:
+      - Multi-omic single-cell analysis linking CAR T dysfunction and myeloid programs to resistance.
+      - Spatial transcriptomics (CosMx) + GNNs to map immune–tumor niches.
+      - Built interpretable multimodal AI (tcellGPT foundation).
+  - role: ML Engineer — Antibody Discovery
+    org: Novartis
+    dates: 2023
+    points:
+      - End-to-end candidate triage models and affinity prediction.
+      - Improved hit-rate and decision velocity.
+  - role: Systems Engineer — Bioreactor Control
+    org: Genentech
+    dates: 2022
+    points:
+      - Control algorithms and telemetry dashboards for stable bioprocess ops.
+---
+<div class="section-head"><h1>CV / Background</h1></div>
+
+<h2>Education</h2>
+{% set items = education %}
+{% include "components/timeline.njk" %}
+
+<h2>Experience</h2>
+{% set items = experience %}
+{% include "components/timeline.njk" %}
+
+<p><a class="item-link" href="#">Download full CV (PDF) →</a></p>

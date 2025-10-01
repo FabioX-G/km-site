@@ -1,0 +1,15 @@
+<section class="timeline">
+  {% for it in items %}
+  <div class="ti">
+    <div class="ti-head">
+      <div class="ti-role">{{ it.role }}</div>
+      <div class="ti-org">— {{ it.org }}</div>
+      <div class="ti-dates">{{ it.dates }}</div>
+    </div>
+    <div class="ti-body">
+      {% if it.desc %}<p>{{ it.desc }}</p>{% endif %}
+      {% if it.points %}<ul>{% for p in it.points %}<li>{{ p }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</section>

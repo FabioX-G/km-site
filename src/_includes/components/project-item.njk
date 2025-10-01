@@ -1,0 +1,11 @@
+<article class="item-card">
+  <div class="item-head">
+    <h3 class="item-title">{{ title }}</h3>
+    <div class="item-meta">{{ org }} · {{ year }}</div>
+  </div>
+  {% if summary %}<p class="item-body">{{ summary }}</p>{% endif %}
+  {% if tags %}
+    <div class="tags">{% for t in tags %}<span class="tag">{{ t }}</span>{% endfor %}</div>
+  {% endif %}
+  {% if link %}<div class="item-actions"><a class="item-link" href="{{ link }}">Learn more →</a></div>{% endif %}
+</article>

@@ -1,0 +1,27 @@
+{
+  "title": "Kelvin Mo",
+  "tagline": "Biologist, Data Scientist, and Innovator at the intersection of cancer immunology and computation.",
+  "description": "Kelvin Mo — Harvard BBS PhD student. Building at the interface of biology and computation.",
+  "url": "https://kelvinmo.com",
+  "author": {
+    "name": "Kelvin Mo",
+    "email": "kelvinmo@harvard.edu",
+    "linkedin": "https://www.linkedin.com/in/kelvin-mo/",
+    "github": "https://github.com/kelvinmo",
+    "scholar": "#",
+    "location": "Cambridge, MA",
+    "headshot": "/assets/kelvinmo-profile.png"
+  },
+  "seo": {
+    "keywords": "Kelvin Mo, Harvard, BBS, biology, computational biology, cancer immunology, CAR T",
+    "image": "/assets/og-cover.jpg",
+    "twitter": "@kelvinmo"
+  },
+  "nav": [
+    { "title": "About", "url": "/about/" },
+    { "title": "Projects", "url": "/projects/" },
+    { "title": "Publications", "url": "/publications/" },
+    { "title": "CV", "url": "/cv/" },
+    { "title": "Contact", "url": "/contact/" }
+  ]
+}

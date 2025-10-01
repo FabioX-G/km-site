@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" class="no-js" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title or site.title }}{% if page.url != "/" %} — {{ site.title }}{% endif %}</title>
+
+  <meta name="description" content="{{ description or site.description }}">
+  <meta name="keywords" content="{{ site.seo.keywords }}">
+  <link rel="canonical" href="{{ site.url }}{{ page.url | url }}">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ title or site.title }}">
+  <meta property="og:description" content="{{ description or site.description }}">
+  <meta property="og:url" content="{{ site.url }}{{ page.url | url }}">
+  <meta property="og:image" content="{{ site.seo.image }}">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="{{ site.seo.twitter }}">
+  <meta name="twitter:title" content="{{ title or site.title }}">
+  <meta name="twitter:description" content="{{ description or site.description }}">
+  <meta name="twitter:image" content="{{ site.seo.image }}">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=IBM+Plex+Serif:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script defer src="/assets/scripts.js"></script>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  {% include "components/header.njk" %}
+
+  <main id="content" class="container">
+    {{ content | safe }}
+  </main>
+
+  {% include "components/footer.njk" %}
+</body>
+</html>

@@ -1,0 +1,52 @@
+---
+layout: base
+title: Projects
+description: Projects by Kelvin Mo
+permalink: "/projects/"
+projects:
+  - title: Graph Neural Networks for Spatial Transcriptomics
+    org: Harvard / Stanford
+    year: "2024–2025"
+    summary: Built GNN models (GCN/GAT) on CosMx LBCL datasets to predict CAR T response and uncover spatially organized immune–tumor programs.
+    link: "#"
+    tags: ["CosMx", "GNN", "CAR T", "Spatial"]
+  - title: Novartis Antibody Discovery ML Pipeline
+    org: Novartis
+    year: "2023"
+    summary: End-to-end pipeline for candidate triage and affinity prediction; improved hit-rate and decision velocity.
+    link: "#"
+    tags: ["Antibody ML", "Discovery", "E2E"]
+  - title: Genentech Bioreactor Control System
+    org: Genentech
+    year: "2022"
+    summary: Control algorithms and telemetry dashboards for stable bioreactor operation.
+    link: "#"
+    tags: ["Controls", "Bioprocess", "Telemetry"]
+  - title: Tumor Microenvironment Framework
+    org: Stanford
+    year: "2022–2024"
+    summary: Map immune–tumor interactions and resistance mechanisms in LBCL and DMG.
+    link: "#"
+    tags: ["TME", "LBCL", "DMG"]
+  - title: Manometry Analysis Pipeline (DDW 2021)
+    org: UCSD / DDW
+    year: "2021"
+    summary: Signal processing + visualization for GI motility recordings.
+    link: "#"
+    tags: ["Signal Processing", "GI", "DDW"]
+---
+
+<div class="section-head"><h1>Projects</h1></div>
+
+<section class="grid-sleek">
+  {% for p in projects %}
+    {# Pass data to the component via local vars (portable/safe) #}
+    {% set title = p.title %}
+    {% set org = p.org %}
+    {% set year = p.year %}
+    {% set summary = p.summary %}
+    {% set link = p.link %}
+    {% set tags = p.tags %}
+    {% include "components/project-item.njk" %}
+  {% endfor %}
+</section>

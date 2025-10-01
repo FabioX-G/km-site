@@ -1,0 +1,6 @@
+<article class="pub-item">
+  <h3 class="pub-title">{{ title }}</h3>
+  <div class="pub-meta">{{ venue }}{% if status %} · {{ status }}{% endif %}</div>
+  {% if blurb %}<p class="pub-blurb">{{ blurb }}</p>{% endif %}
+  {% if link %}<a class="item-link" href="{{ link }}">View →</a>{% endif %}
+</article>

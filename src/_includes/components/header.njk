@@ -1,0 +1,9 @@
+<header class="site-header">
+  <a class="brand" href="/">Kelvin Mo</a>
+  <nav class="nav">
+    {% for item in site.nav %}
+      <a href="{{ item.url }}" class="nav-link{% if page.url == item.url %} active{% endif %}">{{ item.title }}</a>
+    {% endfor %}
+    <button id="themeToggle" aria-label="Toggle theme">◐</button>
+  </nav>
+</header>
