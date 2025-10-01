@@ -130,3 +130,18 @@ main li{ line-height: 1.8; }
 .site-footer a:hover{
   color: var(--link-hover);
 }
+
+/* --- iOS Safari fix: avoid "fixed layer detaches on pinch-zoom" --- */
+/* Detect iOS Safari via a supported property */
+@supports (-webkit-touch-callout: none) {
+  /* Let the background layers scroll with the document on iOS */
+  body::before,
+  body::after,
+  .bg-grid {
+    position: absolute;   /* was: fixed */
+    inset: 0;
+  }
+
+  /* Ensure the document is tall enough for absolute layers to cover */
+  html, body { min-height: 100%; }
+}
