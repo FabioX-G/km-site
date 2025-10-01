@@ -6,6 +6,36 @@ permalink: "/"
 ---
 {% include "components/hero.njk" %}
 
+{% set previewProjects = profile.projects | slice(0, 4) %}
+{% set previewPublications = profile.publications | slice(0, 2) %}
+
+<section class="home-grid home-highlight" aria-label="Snapshot of Kelvin's work">
+  <article class="home-card">
+    <h2>{{ profile.story.title }}</h2>
+    <p class="card-lede">{{ profile.story.subtitle }}</p>
+    <p>{{ profile.story.narrative | first }}</p>
+    <a class="card-link" href="/about/">Read the story -></a>
+  </article>
+  <article class="home-card">
+    <h2>Highlighted Projects</h2>
+    <ul class="home-list">
+      {% for project in previewProjects %}
+        <li>{{ project.title }}</li>
+      {% endfor %}
+    </ul>
+    <a class="card-link" href="/projects/">See all projects -></a>
+  </article>
+  <article class="home-card">
+    <h2>Publications & Awards</h2>
+    <ul class="home-list">
+      {% for item in previewPublications %}
+        <li>{{ item.title }}</li>
+      {% endfor %}
+    </ul>
+    <a class="card-link" href="/publications/">Browse publications -></a>
+  </article>
+</section>
+
 <section class="section about-preview" aria-labelledby="about-preview-title">
   <div class="section-head">
     <h2 id="about-preview-title">About Kelvin</h2>
@@ -23,29 +53,6 @@ permalink: "/"
           <li>
             <h3>{{ pillar.title }}</h3>
             <p>{{ pillar.body }}</p>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section class="section story-preview" aria-labelledby="story-title">
-  <div class="story-card">
-    <div class="story-copy">
-      <h2 id="story-title">{{ profile.story.title }}</h2>
-      <p class="story-subtitle">{{ profile.story.subtitle }}</p>
-      {% for paragraph in profile.story.narrative %}
-        <p>{{ paragraph }}</p>
-      {% endfor %}
-      <a class="item-link" href="/about/">See the full journey -></a>
-    </div>
-    <div class="story-highlights" aria-label="Story highlights">
-      <ul role="list">
-        {% for highlight in profile.story.highlights %}
-          <li>
-            <span class="story-label">{{ highlight.label }}</span>
-            <span class="story-detail">{{ highlight.detail }}</span>
           </li>
         {% endfor %}
       </ul>
