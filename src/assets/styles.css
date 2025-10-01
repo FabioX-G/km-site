@@ -1,108 +1,105 @@
 /* ==========================================================================
-   Kelvin Mo — Site Styles
-   Principles: clarity, minimal global overrides, one owner for background,
-   mobile-first, accessible contrast, clean components.
+   Kelvin Mo — Site Styles (clean, robust, future-proof)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
    1) Design tokens
    -------------------------------------------------------------------------- */
 :root{
-  /* Core palette (dark) */
-  --bg:#0b1020;
-  --bg-alt:#0f1530;
-  --fg:#e6e9f2;
-  --muted:#aab3c5;
-  --accent:#7bdff2;
+  /* Dark theme */
+  --bg: #0b1020;
+  --bg-alt: #0f1530;
+  --fg: #e6e9f2;
+  --muted: #aab3c5;
+  --accent: #7bdff2;
 
-  /* Surfaces */
-  --card:#121939;
-  --card-border:rgba(255,255,255,.08);
-  --glass:rgba(255,255,255,.06);
+  --card: #121939;
+  --card-border: rgba(255,255,255,.08);
 
-  /* Neon accents for hero background blobs */
-  --neon-cyan:#33e1ff;
-  --neon-magenta:#ff3d9a;
-  --neon-violet:#8a5cff;
+  /* Neon blobs */
+  --neon-cyan: #33e1ff;
+  --neon-magenta: #ff3d9a;
+  --neon-violet: #8a5cff;
 
   /* Links (dark) */
-  --link:#9bd6ff;
-  --link-hover:#d5f1ff;
-  --link-underline:rgba(155,214,255,.45);
+  --link: #9bd6ff;
+  --link-hover: #d5f1ff;
+  --link-underline: rgba(155,214,255,.45);
 }
 
-/* Light theme tokens */
+/* Light theme: keep a faint tint so there are no pure-white gaps */
 html[data-theme="light"]{
-  --bg:#fff;
-  --bg-alt:#f8fafc;
-  --fg:#0a0a0a;
-  --muted:#5b6473;
-  --accent:#0ea5e9;
+  --bg: #f7fbff;          /* slightly blue-tinted white */
+  --bg-alt: #fff0f9;      /* faint magenta tint */
+  --fg: #0a0a0a;
+  --muted: #586071;
+  --accent: #0ea5e9;
 
-  --card:#fff;
-  --card-border:rgba(0,0,0,.08);
-  --glass:rgba(0,0,0,.04);
+  --card: #ffffff;
+  --card-border: rgba(0,0,0,.08);
 
   --link:#0a66ff;
   --link-hover:#084ccc;
-  --link-underline:rgba(10,102,255,.35);
+  --link-underline: rgba(10,102,255,.35);
 }
 
 /* --------------------------------------------------------------------------
-   2) Base reset (gentle)
+   2) Base reset
    -------------------------------------------------------------------------- */
-*{ box-sizing:border-box; }
-html, body{
-  height:100%;
-  min-height:100%;
-  margin:0;
-  padding:0;
-}
-body{
-  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans";
-  color:var(--fg);
-  position:relative;
-  overflow-x:hidden;
-  background:transparent; /* allow root background through */
+* { box-sizing: border-box; }
+html, body { height: 100%; min-height: 100%; margin: 0; padding: 0; }
+body {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
+  color: var(--fg);
+  background: transparent;          /* let the root own the paint */
+  overflow-x: hidden;
+  position: relative;
 }
 
 /* --------------------------------------------------------------------------
-   3) Dynamic background — owned by the ROOT (html)
-      - Desktop: pinned to viewport (fixed) for zero-detach.
-      - iOS Safari: scroll (prevents pinch-zoom glitches).
+   3) Fundamental background (ROOT)
+      Coverage & stability principles:
+      - Paint on html, not body
+      - Layers sized > viewport (200vw / 200vh) to avoid “holes”
+      - Fixed on desktop; scroll on iOS (pinch-zoom friendly)
    -------------------------------------------------------------------------- */
 html{
-  /* Fallback base color */
-  background-color:var(--bg);
+  background-color: var(--bg);
 
-  /* Layer stack:
-     - 3 soft neon radial blobs
-     - base linear wash between bg/bd-alt
-     - subtle noise (SVG turbulence)
-     - faint cross grid
-  */
+  /* Layer stack (back → front) */
+  /*   a) base conic wash (gives subtle color across the *entire* canvas)
+       b) large linear wash between bg/bg-alt
+       c) mega soft neon blobs (all oversized so they always cover)
+       d) subtle noise
+       e) faint cross grid                                      */
   background-image:
-    radial-gradient(60vw 60vh at 15% 20%,
-      color-mix(in oklab, var(--neon-cyan) 16%, transparent), transparent 60%),
-    radial-gradient(70vw 70vh at 85% 15%,
-      color-mix(in oklab, var(--neon-magenta) 14%, transparent), transparent 65%),
-    radial-gradient(80vw 80vh at 50% 100%,
-      color-mix(in oklab, var(--neon-violet) 12%, transparent), transparent 60%),
-    linear-gradient(120deg, var(--bg), var(--bg-alt) 40%, var(--bg)),
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.07'/></svg>"),
+    conic-gradient(from 15deg at 30% 40%,
+      color-mix(in oklab, var(--bg) 90%, var(--bg-alt) 10%),
+      color-mix(in oklab, var(--bg-alt) 85%, var(--bg) 15%),
+      color-mix(in oklab, var(--bg) 92%, var(--bg-alt) 8%)),
+    linear-gradient(120deg, var(--bg) 0%, var(--bg-alt) 45%, var(--bg) 100%),
+    radial-gradient(120vw 120vh at 10% 15%,
+      color-mix(in oklab, var(--neon-cyan) 18%, transparent), transparent 70%),
+    radial-gradient(140vw 120vh at 90% 10%,
+      color-mix(in oklab, var(--neon-magenta) 16%, transparent), transparent 72%),
+    radial-gradient(160vw 140vh at 50% 110%,
+      color-mix(in oklab, var(--neon-violet) 14%, transparent), transparent 75%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.06'/></svg>"),
     linear-gradient(145deg, rgba(255,255,255,.06) 1px, transparent 1px),
     linear-gradient(35deg,  rgba(255,255,255,.04) 1px, transparent 1px);
 
   background-size:
-    60vw 60vh,
-    70vw 70vh,
-    80vw 80vh,
-    100% 100%,
-    300px 300px,
-    30px 30px,
-    60px 60px;
+    200% 200%,    /* conic wash */
+    100% 100%,    /* linear base */
+    120vw 120vh,  /* cyan blob   */
+    140vw 120vh,  /* magenta     */
+    160vw 140vh,  /* violet      */
+    300px 300px,  /* noise tile  */
+    30px 30px,    /* fine grid   */
+    60px 60px;    /* coarse grid */
 
   background-position:
+    50% 50%,
     0% 0%,
     0% 0%,
     0% 0%,
@@ -112,33 +109,30 @@ html{
     0% 0%;
 
   background-repeat:
-    no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat;
+    no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat;
 
   background-blend-mode:
-    normal, normal, normal, normal, soft-light, normal, normal;
+    normal, normal, normal, normal, normal, soft-light, normal, normal;
 
-  /* Keep fixed on desktop to avoid any detaching on zoom/scroll */
-  background-attachment:
-    fixed, fixed, fixed, fixed, fixed, fixed, fixed;
+  /* Pin to viewport on desktop so it never “slides off” */
+  background-attachment: fixed, fixed, fixed, fixed, fixed, fixed, fixed, fixed;
 
-  filter:saturate(105%) contrast(102%);
-  animation:bg-pan 28s linear infinite;
-  transform:translateZ(0);
-  will-change:background-position;
+  animation: bg-drift 28s linear infinite;
+  will-change: background-position;
+  transform: translateZ(0);
+  filter: saturate(105%) contrast(102%);
 }
 
-/* iOS Safari: allow the layers to scroll (prevents pinch-zoom artifacts) */
+/* iOS Safari: avoid fixed+pinch jank by letting it scroll */
 @supports (-webkit-touch-callout: none) {
-  html{
-    background-attachment:
-      scroll, scroll, scroll, scroll, scroll, scroll, scroll;
-  }
+  html { background-attachment: scroll, scroll, scroll, scroll, scroll, scroll, scroll, scroll; }
 }
 
-/* Subtle drift of the blobs only */
-@keyframes bg-pan{
+/* Gentle drift for the blobs (base washes stay steady) */
+@keyframes bg-drift{
   0%{
     background-position:
+      50% 50%,
       0% 0%,
       0% 0%,
       0% 0%,
@@ -149,16 +143,18 @@ html{
   }
   50%{
     background-position:
-      10% 2%,
-      -8% 4%,
-      0% -4%,
+      48% 52%,
       0% 0%,
+      8% 3%,
+      -6% 4%,
+      2% -4%,
       0% 0%,
       0% 0%,
       0% 0%;
   }
   100%{
     background-position:
+      50% 50%,
       0% 0%,
       0% 0%,
       0% 0%,
@@ -170,31 +166,30 @@ html{
 }
 
 /* Motion preference */
-@media (prefers-reduced-motion: reduce){
-  html{ animation:none; }
-}
+@media (prefers-reduced-motion: reduce){ html{ animation:none; } }
 
 /* --------------------------------------------------------------------------
    4) Layout primitives
    -------------------------------------------------------------------------- */
 .container{
-  width:min(1100px,92%);
-  margin:0 auto;
-  padding:3rem 0 6rem;
-  position:relative;
-  z-index:0; /* content sits above background but below header */
+  width: min(1100px, 92%);
+  margin: 0 auto;
+  padding: 3rem 0 6rem;
+  position: relative;
+  z-index: 0; /* above background, below sticky header */
+  background: transparent; /* no local panels */
 }
 
 /* --------------------------------------------------------------------------
    5) Header / navigation
    -------------------------------------------------------------------------- */
 .site-header{
-  position:sticky; top:0; z-index:10;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:1rem min(4vw,24px);
-  backdrop-filter:blur(8px);
-  background:color-mix(in oklab, var(--bg) 80%, transparent);
-  border-bottom:1px solid var(--card-border);
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem min(4vw,24px);
+  backdrop-filter: blur(8px);
+  background: color-mix(in oklab, var(--bg) 82%, transparent);
+  border-bottom: 1px solid var(--card-border);
 }
 .brand{ font-weight:700; color:var(--fg); text-decoration:none; }
 .nav{ display:flex; gap:1rem; align-items:center; }
@@ -203,7 +198,7 @@ html{
   padding:.25rem .5rem; border-radius:8px;
 }
 .nav-link:hover, .nav-link.active{
-  color:var(--fg); background:var(--card-border);
+  color:var(--fg); background: var(--card-border);
 }
 #themeToggle{
   border:1px solid var(--card-border);
@@ -212,21 +207,22 @@ html{
 }
 
 /* --------------------------------------------------------------------------
-   6) Hero
+   6) Hero (content only; no backgrounds here)
    -------------------------------------------------------------------------- */
 .hero{
   display:grid;
   grid-template-columns:140px 1fr;
   gap:2rem; align-items:center;
   margin-top:2rem;
+  background: transparent; /* ensure no local paint */
 }
 .headshot{
   width:140px; height:140px; border-radius:50%;
   object-fit:cover; border:2px solid var(--card-border);
 }
 .hero-copy h1{
-  font-size:clamp(1.8rem,3vw,2.6rem);
-  margin:0; font-family:"IBM Plex Serif",serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  margin: 0; font-family: "IBM Plex Serif", serif;
 }
 .tagline{ margin-top:.5rem; color:var(--muted); font-size:1.05rem; }
 .lede{ margin-top:1rem; line-height:1.7; }
@@ -244,20 +240,18 @@ html{
   display:grid; gap:12px; grid-template-columns:repeat(3, minmax(0,1fr));
   margin-top:1rem;
 }
-@media (max-width:900px){
-  .grid-sleek{ grid-template-columns:1fr; }
-}
+@media (max-width:900px){ .grid-sleek{ grid-template-columns:1fr; } }
 
 .item-card{
-  background:color-mix(in oklab, var(--card) 92%, transparent);
-  border:1px solid var(--card-border);
-  border-radius:14px;
-  padding:1rem 1.1rem;
-  transition:transform .18s ease, border-color .18s ease, background-color .18s ease;
+  background: color-mix(in oklab, var(--card) 92%, transparent);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  transition: transform .18s ease, border-color .18s ease, background-color .18s ease;
 }
 .item-card:hover{
-  transform:translateY(-1.5px);
-  border-color:color-mix(in oklab, var(--accent) 30%, var(--card-border));
+  transform: translateY(-1.5px);
+  border-color: color-mix(in oklab, var(--accent) 30%, var(--card-border));
 }
 .item-head{ display:flex; align-items:baseline; justify-content:space-between; gap:.75rem; }
 .item-title{ margin:0; font-size:1.05rem; font-weight:600; }
@@ -272,9 +266,7 @@ html{
   border:1px solid var(--card-border); color:var(--muted); font-size:.78rem;
 }
 
-.pub-list{
-  margin-top:1rem; display:grid; gap:10px;
-}
+.pub-list{ margin-top:1rem; display:grid; gap:10px; }
 .pub-item{
   border:1px solid var(--card-border);
   border-left:3px solid color-mix(in oklab, var(--accent) 65%, var(--card-border));
@@ -346,17 +338,14 @@ main p, main li{ line-height:1.7; color:var(--fg); }
   display:flex; justify-content:space-between; align-items:center; gap:1rem;
   color:var(--muted);
   backdrop-filter:blur(.5px);
-  border-top:1px solid var(--glass);
+  border-top:1px solid rgba(255,255,255,.06);
   padding-top:1rem;
 }
-.site-footer a{
-  color:var(--link);
-  text-decoration:none;
-}
+.site-footer a{ color:var(--link); text-decoration:none; }
 .site-footer a:hover{ color:var(--link-hover); }
 
 /* --------------------------------------------------------------------------
-   10) Link accessibility
+   10) Links & lists
    -------------------------------------------------------------------------- */
 a{
   color:var(--link);
@@ -368,47 +357,11 @@ a:hover, a:focus{
   color:var(--link-hover);
   text-decoration-color:currentColor;
 }
-
-/* Content lists: slightly more breathing room for legibility */
 main li{ line-height:1.8; }
-
-/* Footer links: reduce underline noise but keep contrast */
 .site-footer a{ text-decoration-thickness:.08rem; }
 
-/* --- Kill any leftover hero-local overlays so the ROOT background is the only one --- */
-.hero,
-.hero::before,
-.hero::after,
-.hero [class*="bg"],
-.hero [class*="gradient"],
-.hero [class*="overlay"] {
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-/* If a fixed-position hero layer was previously used, turn it off decisively */
-body::before,
-body::after {
-  content: none !important;
-}
-
-/* Ensure no container paints a panel behind the hero */
-.container { background: transparent !important; }
-
-/* Make hero section fully transparent so only the ROOT background shows */
-section.hero,
-section.hero::before,
-section.hero::after,
-section.hero .hero-copy {
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-/* Nuke any legacy global overlays that might still exist */
-body::before,
-body::after {
-  content: none !important;
-}
-
-/* Safety: no container panels behind hero */
-.container { background: transparent !important; }
+/* --------------------------------------------------------------------------
+   11) Hard guarantees: no local hero/background overlays
+   -------------------------------------------------------------------------- */
+.hero::before, .hero::after,
+body::before, body::after { content:none !important; }
