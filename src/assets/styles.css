@@ -5,44 +5,55 @@
 /* --------------------------------------------------------------------------
    1) Design tokens
    -------------------------------------------------------------------------- */
-:root{
-  /* Dark (sleek & cyber: deep graphite + neon cyan/indigo/violet) */
-  --bg:#0b0f14;
-  --fg:#e7ebf2;
-  --muted:#9aa3b3;
+/* ===== Theme tokens ===== */
 
-  --card:#101620;
+/* Default = DARK (if no data-theme/class present) */
+:root{
+  --bg:#070b14;             /* deeper graphite navy */
+  --fg:#eaf2ff;
+  --muted:#9aa8bf;
+
+  --card:#0c1324;
   --card-border:rgba(255,255,255,.08);
 
-  --accent:#39d3ff;  /* neon cyan as primary accent */
+  --accent:#3fe0ff;         /* neon cyan */
 
-  /* RGB triplets for reuse in rgba() */
-  --c-cyan:   57,211,255;   /* neon cyan */
-  --c-indigo: 78, 98,220;   /* electric indigo */
-  --c-violet:116, 78,212;   /* cool violet */
+  /* Dark gradient RGBs (cool, non-pink) */
+  --c-cyan:   63,224,255;
+  --c-indigo: 84,102,255;
+  --c-violet:148, 86,255;
 
-  /* Links */
-  --link:#7dd9ff;
-  --link-hover:#def4ff;
-  --link-underline:rgba(125,217,255,.45);
+  --link:#87dbff;
+  --link-hover:#e1f6ff;
+  --link-underline:rgba(135,219,255,.45);
 
   color-scheme: dark light;
 }
 
-/* Light theme (kept cool, not sugary) */
-html[data-theme="light"]{
-  --bg:#f5f7fb;
-  --fg:#0b1016;
-  --muted:#586171;
+/* LIGHT tokens (cool, crisp; not sugary) */
+html[data-theme="light"], html.light{
+  --bg:#f3f7ff;
+  --fg:#0a1020;
+  --muted:#5a657a;
 
   --card:#ffffff;
   --card-border:rgba(0,0,0,.08);
 
   --accent:#0ea5e9;
 
+  /* Light gradient RGBs (brighter but cool) */
+  --c-cyan:   120,230,255;
+  --c-indigo: 115,135,255;
+  --c-violet: 190,155,255;
+
   --link:#0a66ff;
   --link-hover:#084ccc;
   --link-underline:rgba(10,102,255,.35);
+}
+
+/* Optional explicit DARK alias support */
+html[data-theme="dark"], html.dark{
+  /* inherit :root values — kept for robustness */
 }
 
 /* --------------------------------------------------------------------------
@@ -55,56 +66,72 @@ html{ background-color: var(--bg); } /* 兜底纯色；真正的渐变在第3节
 /* --------------------------------------------------------------------------
    3) Global background — SINGLE OWNER = html (iOS-safe, fixed to viewport)
    -------------------------------------------------------------------------- */
+/* angle custom prop + base animation helpers stay */
 @property --angle { syntax:"<angle>"; inherits:false; initial-value:0deg; }
 
-html{
-  /* 固定（相对视口）的一层复合渐变：不会随滚动被省绘 */
+/* DARK gradient (html, dark) */
+html:not([data-theme="light"]):not(.light),
+html[data-theme="dark"],
+html.dark{
   --angle: 0deg;
   background:
     conic-gradient(from var(--angle) at 50% 26%,
       rgba(var(--c-cyan),  .22) 0deg,
-      rgba(var(--c-indigo),.20) 120deg,
-      rgba(var(--c-violet),.24) 240deg,
+      rgba(var(--c-indigo),.22) 140deg,
+      rgba(var(--c-violet),.26) 260deg,
       rgba(var(--c-cyan),  .22) 360deg),
     radial-gradient(120vh 60vh at 50% -20vh,
-      rgba(var(--c-indigo),.10) 0%,
-      rgba(var(--c-violet),.08) 60%,
-      transparent 100%),
-    radial-gradient(140vh 80vh at 50% 120vh,
+      rgba(var(--c-indigo),.12) 0%,
+      rgba(var(--c-violet),.10) 60%, transparent 100%),
+    radial-gradient(140vh 80vh at 50% 100vh,
       rgba(var(--c-violet),.10) 0%,
       rgba(var(--c-indigo),.10) 40%,
-      rgba(var(--c-cyan),  .08) 75%,
-      transparent 100%),
+      rgba(var(--c-cyan),  .08) 75%, transparent 100%),
     linear-gradient(180deg,
-      rgba(10,16,25,.00) 0%,
-      rgba(10,16,25,.06) 60%,
-      rgba(10,16,25,.10) 100%);
-
+      rgba(7,11,20,.00) 0%,
+      rgba(7,11,20,.06) 60%,
+      rgba(7,11,20,.10) 100%);
   background-repeat:no-repeat;
   background-size: 240% 240%, 160% 160%, 200% 200%, 100% 100%;
   background-position: 50% 40%, 50% 0%, 50% 100vh, 50% 50%;
-
-  /* 轻微旋转即可，避免大幅位移动画触发重合成 */
   animation: html-rot 60s linear infinite;
-
-  /* 强制稳定合成，防止某些设备缩放/滚动时掉帧 */
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-transform: translateZ(0);
-          transform: translateZ(0);
+  -webkit-backface-visibility:hidden; backface-visibility:hidden;
+  -webkit-transform:translateZ(0); transform:translateZ(0);
 }
 
-/* 背景旋转（仅角度，避免位置动画） */
-@keyframes html-rot{ to{ --angle:360deg; } }
-
-/* body 完全透明，承载内容滚动 */
-body{
-  background: transparent;
-  color: var(--fg);
-  overflow-x: hidden;
-  position: relative;
-  line-height: 1.6;
+/* LIGHT gradient (html, light) */
+html[data-theme="light"], html.light{
+  --angle: 0deg;
+  background:
+    conic-gradient(from var(--angle) at 50% 24%,
+      rgba(var(--c-cyan),  .18) 0deg,
+      rgba(var(--c-indigo),.16) 135deg,
+      rgba(var(--c-violet),.20) 255deg,
+      rgba(var(--c-cyan),  .18) 360deg),
+    radial-gradient(120vh 60vh at 50% -20vh,
+      rgba(var(--c-indigo),.12) 0%,
+      rgba(var(--c-violet),.10) 60%, transparent 100%),
+    radial-gradient(140vh 80vh at 50% 100vh,
+      rgba(var(--c-violet),.10) 0%,
+      rgba(var(--c-indigo),.08) 40%,
+      rgba(var(--c-cyan),  .06) 75%, transparent 100%),
+    linear-gradient(180deg,
+      rgba(243,247,255,.00) 0%,
+      rgba(243,247,255,.55) 55%,
+      rgba(243,247,255,.80) 100%);
+  background-repeat:no-repeat;
+  background-size: 240% 240%, 160% 160%, 200% 200%, 100% 100%;
+  background-position: 50% 42%, 50% 0%, 50% 100vh, 50% 50%;
+  animation: html-rot 60s linear infinite;
+  -webkit-backface-visibility:hidden; backface-visibility:hidden;
+  -webkit-transform:translateZ(0); transform:translateZ(0);
 }
+
+/* Rotate only the hue (cheap) */
+@keyframes html-rot { to { --angle: 360deg; } }
+
+/* Body stays transparent to avoid double backgrounds */
+body{ background: transparent; color: var(--fg); overflow-x:hidden; position:relative; line-height:1.6; }
 
 /* --------------------------------------------------------------------------
    4) Header / navigation
@@ -121,8 +148,8 @@ body{
   /* 渐变带叠加在半透明底色上；不依赖 blur */
   background:
     linear-gradient(to bottom,
-      rgba(var(--c-indigo), .16) 0%,
-      rgba(var(--c-cyan),   .10) 60%,
+      rgba(var(--c-indigo), .18) 0%,
+      rgba(var(--c-cyan),   .12) 60%,
       transparent 100%),
     color-mix(in srgb, var(--bg) 86%, transparent);
 
