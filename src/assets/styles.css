@@ -188,6 +188,42 @@ main, section, header, footer,
 }
 .nav-link, #themeToggle{ flex: 0 0 auto; } /* 每个项都是固定宽度的“胶囊” */
 
+/* 1) 彻底禁止文档产生横向滚动条（防止页面被横向拖动） */
+html, body { overflow-x: hidden; }
+
+/* 2) 只让导航容器自己滚：阻断滚动链传递到页面 */
+.nav-scroller{
+  overscroll-behavior-x: contain;  /* 关键：手势停在此容器 */
+  max-width: 100vw;                /* 永远不比视口宽 */
+  width: 100%;
+}
+
+/* 3) Header 自身不允许内容溢出（避免两侧“露底”造成竖色带） */
+.site-header{ width:100vw; overflow: hidden; }
+
+/* 4) 导航条是单行“胶囊”，不会撑爆布局 */
+.nav{
+  display: inline-flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+.nav-link, #themeToggle{ flex: 0 0 auto; }
+
+/* 5) iOS 上含 blur 的 header 容易触发独立合成层 → 产生“分层误差”
+      降级 blur 强度，并在 iOS 上改为更实的底色，避免产生竖向色带 */
+@supports (-webkit-touch-callout: none) {
+  .site-header{
+    backdrop-filter: none;                       /* 关闭 blur 降合成层数量 */
+    background: color-mix(in srgb, var(--bg) 92%, black 8%);
+  }
+}
+
+/* 6) 再次确保任何容器不自己“涂背景”（统一只有 html 那一层） */
+.site-header,
+.container,
+main, section, header, footer,
+.hero { background: transparent !important; }
+
 /* --------------------------------------------------------------------------
    6) Hero (content only)
    -------------------------------------------------------------------------- */

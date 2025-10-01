@@ -2,8 +2,9 @@
 <html lang="en" class="no-js" data-theme="light">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"> 
- <title>{{ title or site.title }}{% if page.url != "/" %} — {{ site.title }}{% endif %}</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{ title or site.title }}{% if page.url != "/" %} — {{ site.title }}{% endif %}</title>
 
   <meta name="description" content="{{ description or site.description }}">
   <meta name="keywords" content="{{ site.seo.keywords }}">
@@ -23,11 +24,16 @@
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=IBM+Plex+Serif:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- 统一样式：根元素负责背景；不要在模板里再插入其他背景层 -->
   <link rel="stylesheet" href="/assets/styles.css">
+
+  <!-- 你的站点脚本（defer即可） -->
   <script defer src="/assets/scripts.js"></script>
 </head>
 <body>
-  <div class="bg-grid"></div>
+  {# ❌ 移除这行：会造成第二层背景 #}
+  {# <div class="bg-grid"></div> #}
 
   {% include "components/header.njk" %}
 
@@ -36,5 +42,23 @@
   </main>
 
   {% include "components/footer.njk" %}
+
+  {# ✅ 把横向滑动绑定脚本放到这里，DOM 已经就绪 #}
+  <script>
+    (function () {
+      var scroller = document.querySelector('.nav-scroller');
+      if (!scroller) return;
+
+      // 允许横向滑动但阻断滚动链，避免整页跟着横移
+      scroller.style.overscrollBehaviorX = 'contain';
+      // 兜底：旧设备上阻断冒泡
+      var active = false;
+      scroller.addEventListener('touchstart', function(){ active = true; }, {passive:true});
+      scroller.addEventListener('touchend',   function(){ active = false; }, {passive:true});
+      window.addEventListener('touchmove', function(e){
+        if (active) e.stopPropagation();
+      }, {passive:true});
+    })();
+  </script>
 </body>
 </html>
