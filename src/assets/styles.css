@@ -71,47 +71,52 @@ html{
 body{
   --angle: 0deg;
 
-  /* A. 主色场：大尺寸的 conic 渐变，中心稍上移（让首屏更绚） */
-  /* B. 深处补光：在 ~120vh 位置再加一个很淡的径向晕圈，确保下卷不“褪色” */
-  /* C. 轻微噪声：极淡的大半径径向，防止大面积纯色看成“消失” */
+  /* 顺序很重要：上层→下层；最后一层是非透明线性渐变，当作安全底座 */
   background:
-    conic-gradient(from var(--angle) at 50% 30%,
-      rgba(51,225,255,.26) 0deg,
-      rgba(51,225,255,.12) 70deg,
+    /* 主色场：conic —— 可动画，首屏更绚 */
+    conic-gradient(from var(--angle) at 50% 28%,
+      rgba(51,225,255,.24) 0deg,
       rgba(138, 92,255,.22) 150deg,
-      rgba(255, 61,154,.26) 300deg,
-      rgba(51,225,255,.26) 360deg),
+      rgba(51,225,255,.24) 360deg),
 
+    /* 顶部补光：避免首屏显得平 */
+    radial-gradient(120vh 60vh at 50% -20vh,
+      rgba(138, 92,255,.10) 0%,
+      rgba(51,225,255,.08) 60%,
+      transparent 100%),
+
+    /* 深处补光：2–3 屏仍有层次 */
     radial-gradient(140vh 80vh at 50% 120vh,
-      rgba(255, 61,154,.12) 0%,
-      rgba(138, 92,255,.10) 40%,
+      rgba(138, 92,255,.10) 0%,
       rgba(51,225,255,.08) 75%,
       transparent 100%),
 
-    radial-gradient(200vh 120vh at 60% -20vh,
-      rgba(255,255,255,.03) 0%, transparent 60%);
+    /* 永不透明的底：极淡的纵向线性渐变，防止任意时刻露出纯底色 */
+    linear-gradient(180deg,
+      rgba(12,18,40,.00) 0%,
+      rgba(12,18,40,.06) 60%,
+      rgba(12,18,40,.10) 100%);
 
-  /* 不重复、超大画幅，随滚动自然位移（iOS 安全） */
   background-repeat: no-repeat;
-  background-size: 240% 240%, 200% 200%, 180% 180%;
-  background-position: 50% 45%, 50% 50%, 60% 0%;
+  background-size: 240% 240%, 160% 160%, 200% 200%, 100% 100%;
+  background-position: 50% 40%, 50% 0%, 50% 120vh, 50% 50%;
 
-  /* 轻微旋转与漂移，让颜色在长页中保持活性（仍是一层，GPU 稳） */
   animation: rot 36s linear infinite, drift 28s ease-in-out infinite alternate;
 
-  /* 其余保持不变 */
+  /* 其余保持 */
+  color: var(--fg);
   background-color: var(--bg);
   overflow-x: hidden;
   min-height: 100%;
   position: relative;
 }
 
-/* 动画关键帧：只改变变量与位置，不引入新层 */
+/* 只保留这一份关键帧（与上面的三层匹配） */
 @keyframes rot{ to{ --angle:360deg; } }
 @keyframes drift{
-  0%   { background-position: 48% 44%, 50% 120vh, 60% 0%; }
-  50%  { background-position: 52% 48%, 50% 125vh, 58% -5vh; }
-  100% { background-position: 50% 46%, 50% 120vh, 60% 0%; }
+  0%   { background-position: 48% 38%, 50%  -2vh, 50% 118vh, 50% 50%; }
+  50%  { background-position: 52% 44%, 50%  -4vh, 50% 126vh, 50% 50%; }
+  100% { background-position: 50% 40%, 50%   0vh, 50% 120vh, 50% 50%; }
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -121,16 +126,34 @@ body{
 /* 3) iOS 粘性头部避免 blur 产生独立层；用更实底色替代 */
 .site-header{
   position: sticky; top:0; z-index:10;
+  display:flex; align-items:center; gap:.75rem;
+  padding: 1rem min(4vw, 24px);
+  border-bottom:1px solid var(--card-border);
+
   backdrop-filter: blur(8px);
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  background:
+    linear-gradient(to bottom,
+      rgba(74,92,255,.16) 0%,
+      rgba(51,225,255,.10) 60%,
+      transparent 100%),
+    color-mix(in srgb, var(--bg) 85%, transparent);
 }
 @supports (-webkit-touch-callout: none){
-  .site-header{ backdrop-filter:none; background: color-mix(in srgb, var(--bg) 92%, black 8%); }
+  .site-header{
+    backdrop-filter: none;
+    background:
+      linear-gradient(to bottom,
+        rgba(74,92,255,.14) 0%,
+        rgba(51,225,255,.08) 60%,
+        transparent 100%),
+      color-mix(in srgb, var(--bg) 92%, black 8%);
+  }
 }
 
 /* 4) 保证容器透明，清除遗留覆盖层与伪元素背景 */
-.container, .hero, main, section, header, footer{ background: transparent !important; }
-.hero::before, .hero::after, body::before, body::after{ content:none !important; }
+.container{ background: transparent; }
+.hero::before, .hero::after,
+body::before, body::after{ content:none; }
 
 /* 5) 横向导航只在自身滚动，阻断滚动链 */
 .nav-scroller{
@@ -140,13 +163,6 @@ body{
   overscroll-behavior-x: contain;
 }
 
-/* 动画关键帧（可选） */
-@keyframes rot{ to{ --angle:360deg; } }
-@keyframes drift{
-  0%{   background-position:50% 44%; background-size:232% 232%; }
-  50%{  background-position:55% 48%; background-size:238% 238%; }
-  100%{ background-position:52% 46%; background-size:235% 235%; }
-}
 
 @media (prefers-reduced-motion: reduce){ html{ animation: none; } }
 
