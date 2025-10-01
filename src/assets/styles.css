@@ -62,62 +62,58 @@ body{
 }
 
 /* --------------------------------------------------------------------------
-   3) Global background — SINGLE OWNER = body (iOS-safe)
-   说明：
-   - 上层 conic 提供色相“呼吸”
-   - 顶部 radial 让首屏不平
-   - 第三层 radial 锚在“文档底部” → 页面再长也不褪色
-   - 最底层线性“底座”永不透明 → 任何时刻都不会露纯底色
+   3) Global background — SINGLE OWNER = html (iOS-safe, fixed to viewport)
    -------------------------------------------------------------------------- */
 @property --angle { syntax:"<angle>"; inherits:false; initial-value:0deg; }
 
-body{
+html{
+  /* 固定（相对视口）的一层复合渐变：不会随滚动被省绘 */
   --angle: 0deg;
-
   background:
-    /* 主色场（可动画） */
     conic-gradient(from var(--angle) at 50% 26%,
       rgba(var(--c-cyan),  .22) 0deg,
       rgba(var(--c-indigo),.20) 120deg,
       rgba(var(--c-violet),.24) 240deg,
       rgba(var(--c-cyan),  .22) 360deg),
-
-    /* 顶部补光（首屏层次） */
     radial-gradient(120vh 60vh at 50% -20vh,
       rgba(var(--c-indigo),.10) 0%,
       rgba(var(--c-violet),.08) 60%,
       transparent 100%),
-
-    /* 文档底部补光（贯穿长页）——关键修复 */
-    radial-gradient(140vh 80vh at 50% calc(100% + 40vh),
+    radial-gradient(140vh 80vh at 50% 120vh,
       rgba(var(--c-violet),.10) 0%,
       rgba(var(--c-indigo),.10) 40%,
       rgba(var(--c-cyan),  .08) 75%,
       transparent 100%),
-
-    /* 永不透明线性底座（防露底） */
     linear-gradient(180deg,
       rgba(10,16,25,.00) 0%,
       rgba(10,16,25,.06) 60%,
       rgba(10,16,25,.10) 100%);
 
-  background-repeat: no-repeat;
+  background-repeat:no-repeat;
   background-size: 240% 240%, 160% 160%, 200% 200%, 100% 100%;
-  background-position: 50% 40%, 50% 0%, 50% calc(100% + 40vh), 50% 50%;
+  background-position: 50% 40%, 50% 0%, 50% 100vh, 50% 50%;
 
-  animation: rot 36s linear infinite, drift 28s ease-in-out infinite alternate;
+  /* 轻微旋转即可，避免大幅位移动画触发重合成 */
+  animation: html-rot 60s linear infinite;
 
-  min-height: 100%;
+  /* 强制稳定合成，防止某些设备缩放/滚动时掉帧 */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
 }
 
-@keyframes rot{ to{ --angle:360deg; } }
-/* 与第三层同步使用 calc(100% + …)，避免 Safari 在长页把它“拉回视口附近” */
-@keyframes drift{
-  0%   { background-position: 48% 38%, 50% -2vh, 50% calc(100% + 38vh), 50% 50%; }
-  50%  { background-position: 52% 44%, 50% -4vh, 50% calc(100% + 46vh), 50% 50%; }
-  100% { background-position: 50% 40%, 50%  0vh, 50% calc(100% + 40vh), 50% 50%; }
+/* 背景旋转（仅角度，避免位置动画） */
+@keyframes html-rot{ to{ --angle:360deg; } }
+
+/* body 完全透明，承载内容滚动 */
+body{
+  background: transparent;
+  color: var(--fg);
+  overflow-x: hidden;
+  position: relative;
+  line-height: 1.6;
 }
-@media (prefers-reduced-motion: reduce){ body{ animation:none; } }
 
 /* --------------------------------------------------------------------------
    4) Header / navigation
@@ -218,7 +214,7 @@ body{
   grid-template-columns:140px 1fr;
   gap:2rem; align-items:center;
   margin-top:2rem;
-  background: transparent; /* 背景由 body 提供 */
+  background: transparent; /* 背景由 html 提供 */
 }
 .hero::before, .hero::after,
 body::before, body::after{ content:none; } /* 清理可能的伪元素覆盖 */
